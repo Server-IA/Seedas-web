@@ -38,6 +38,14 @@ function Header() {
                     ))}
                 </div>
             </div>
+            <div className='flex gap-4'>
+            <a href="/sign-in">
+                <button className='bg-gray-900 text-white px-4 py-2 rounded-md cursor-pointer'>Iniciar Sesión</button>
+                </a>
+                <a href="/sign-up">
+                <button className='bg-gray-900 text-white px-4 py-2 rounded-md cursor-pointer'>Registrarse</button>
+                    </a>
+            </div>
             <UserButton />
         </div>
     );

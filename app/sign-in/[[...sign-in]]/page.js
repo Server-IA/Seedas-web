@@ -8,7 +8,7 @@ export default function Page() {
   <div>
     <Image src = '/fondo-l.jpg'width={900} height={1000} 
     className="object-contain h-full w-full"/>
-    <div className="absolute top-20 right-0">
+    <div className="absolute top-28 right-30">
         <SignIn path="/sign-in" />
     </div>
   </div>
