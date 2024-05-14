@@ -15,7 +15,7 @@ datasource db {
 // Modelo para el User
 model User {
   id        Int      @id @default(autoincrement())
-  userId    String   @unique
+  clerkId   String?   @unique
   fullName  String
   email     String   @unique
   createdAt DateTime @default(now())
