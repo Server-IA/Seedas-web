@@ -38,17 +38,20 @@ function Header() {
                     ))}
                 </div>
             </div>
-            <div className='flex gap-4'>
-            <a href="/sign-in">
-                <button className='bg-gray-900 text-white px-4 py-2 rounded-md cursor-pointer'>Iniciar Sesión</button>
+            <div className='flex gap-4 ml-auto'>
+                <a href="/sign-in">
+                    <button className='bg-gray-900 text-white px-8 py-2 rounded-md cursor-pointer'>Iniciar Sesión</button>
                 </a>
                 <a href="/sign-up">
-                <button className='bg-gray-900 text-white px-4 py-2 rounded-md cursor-pointer'>Registrarse</button>
-                    </a>
+                    <button className='bg-gray-900 text-white px-4 py-2 rounded-md cursor-pointer mr-4'>Registrarse</button>
+                </a>
             </div>
+            <div className="mr-4">
             <UserButton />
+            </div>
         </div>
     );
+    
 }
 
 export default Header;

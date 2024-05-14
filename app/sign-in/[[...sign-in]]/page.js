@@ -6,9 +6,9 @@ export default function Page() {
   <>
  
   <div>
-    <Image src = '/fondo-l.jpg'width={900} height={1000} 
+    <Image src = '/fondo-l.jpg'width={800} height={500} 
     className="object-contain h-full w-full"/>
-    <div className="absolute top-28 right-30">
+    <div className="absolute top-28 right-60">
         <SignIn path="/sign-in" />
     </div>
   </div>
