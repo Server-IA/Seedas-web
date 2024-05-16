@@ -1,9 +1,20 @@
-import { clerkMiddleware } from '@clerk/nextjs/server';
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
-export default clerkMiddleware()
+const isProtectedRoute = createRouteMatcher([
+  '/indexPage(.*)',
+  '/about(.*)',
+]);
 
-export const config = {
-  // The following matcher runs middleware on all routes
-  // except static assets.
-  matcher: [ '/((?!.*\\..*|_next).*)', '/', '/(api|trpc)(.*)'],
-};
+export default clerkMiddleware((auth, req, res) => {
+  if (!auth().userId && isProtectedRoute(req)) {
+
+    // Add custom logic to run before redirecting
+
+    // Redirige a tu propia página de inicio de sesión
+    return auth().redirectToSignIn({ 
+      signInURL: '/sign-in' 
+    });
+  }
+});
+
+export const config = { matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)']};
