@@ -8,4 +8,4 @@ function usuario() {
   )
 }
 
-export default usuario
+export default usuario;
