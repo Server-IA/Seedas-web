@@ -15,7 +15,10 @@ datasource db {
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
-  name      String?
+  firstName String?
+  lastName  String?
+  imageUrl  String?
+  externalId String @unique
   posts     Post[]   @relation("UserPosts")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
