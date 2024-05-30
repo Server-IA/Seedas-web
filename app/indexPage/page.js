@@ -1,5 +1,6 @@
 import SearchSection from "../components/Home/SearchSection";
 import GoogleMaps from "../components/Home/GoogleMaps";
+
 // Componente IndexPage
 export default function IndexPage() {
   return (
