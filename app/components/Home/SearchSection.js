@@ -22,15 +22,19 @@ function SearchSection() {
   }, [source, destination]);
 
   return (
+    <div>
     <div className='p-2 md:-6 border-[2px] rounded-xl'>
       <p className='text-[20px] font-bold'>Necesitas transporte</p>
       <InputItem type='source' />
       <InputItem type='destination' />
-      <button className='p-4 bg-black w-full mt-5 text-white rounded-lg'>Buscar</button>
+      <button className='p-4 bg-black w-full mt-5 text-white rounded-lg'
+      onClick={()=>calculateDistance()}>Buscar</button>
       
       {distance ? <CarListOptions distance={distance} /> : null}
     </div>
-  );
+    <CarListOptions/>
+    </div>
+  )
 }
 
-export default SearchSection;
+export default SearchSection

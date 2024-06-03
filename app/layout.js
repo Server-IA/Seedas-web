@@ -3,11 +3,11 @@ import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
 
 // Importación del proveedor de Clerk para la autenticación
-import { ClerkProvider, SignedIn, SignedOut } from '@clerk/nextjs';
+import { ClerkProvider } from '@clerk/nextjs';
 
 // Importación del componente de encabezado y pie de página
-import Header from '@/app/components/Header';
-import Footer from '@/app/components/Footer';
+import Header from '../app/components/Header';
+import Footer from '../app/components/Footer';
 
 // Definición de las fuentes a utilizar
 const inter = Montserrat({ subsets: ["latin"] });
@@ -36,5 +36,5 @@ export default function RootLayout({ children }) {
         </body>
       </html>
     </ClerkProvider>
-  );
+  )
 }

@@ -1,10 +1,9 @@
-"use client"
-import React, { useState } from 'react'
-import SearchSection from '../components/Home/SearchSection'
-import GoogleMaps from '../components/Home/GoogleMaps'
-import { SourceContext } from '../context/SourceContext'
-import { DestinationContext } from '../context/DestinationContext'
-import CarListOptions from '../components/Home/CarListOptions'
+"use client";
+import React, { useState } from 'react';
+import SearchSection from '../components/Home/SearchSection';
+import GoogleMaps from '../components/Home/GoogleMaps';
+import { SourceContext } from '../context/SourceContext';
+import { DestinationContext } from '../context/DestinationContext';
 
 export default function indexPage() {
   const [source, setSource] = useState([])
@@ -20,9 +19,7 @@ export default function indexPage() {
           <div className="col-span-2">
             <GoogleMaps />
           </div>
-          <div>
-          <CarListOptions/>
-          </div>
+         
         </div>
       </DestinationContext.Provider>
     </SourceContext.Provider>
