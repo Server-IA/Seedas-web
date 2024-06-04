@@ -3,7 +3,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useSearchParams } from "next/navigation"
 import React from "react"
-import CheckoutForm from "./../../components/Home/CheckoutForm";
+import CheckoutForm from "./../components/Home/CheckoutForm";
  
 function Payment(){
     const searchParam=useSearchParams();
