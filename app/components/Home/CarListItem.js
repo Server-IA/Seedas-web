@@ -12,6 +12,7 @@ function CarListItem({ car, distance }) {
                     <div>
                         <h2 className='font-semibold text-[18px] flex gap-3'>
                             {car.name}
+                           
                             <span className='flex gap-2 font-normal text-[14px] items-center'>
                                 <HiUser />{car.seat}
                             </span>
