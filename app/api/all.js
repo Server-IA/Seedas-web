@@ -1,6 +1,6 @@
 
 
-import { NextResponse } from 'next/server';
+/*import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
 // Maneja la solicitud GET para obtener todos los usuarios
@@ -12,3 +12,4 @@ export async function GET() {
     return NextResponse.json({ error: 'Error fetching users' }, { status: 500 });
   }
 }
+*/
