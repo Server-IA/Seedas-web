@@ -27,9 +27,8 @@ const MapboxMapTrans = () => {
       // Añadir el geocodificador al mapa
       const geocoder = new MapboxGeocoder({
         accessToken: mapboxgl.accessToken,
-        mapboxgl: mapboxgl, // Pasar la referencia de mapbox-gl al geocodificador
+        mapboxgl: mapboxgl,
         placeholder: 'Buscar ubicaciones...',
-        marker: false, // Desactivar el marcador automático del geocodificador
       });
 
       mapInstance.addControl(geocoder);

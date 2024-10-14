@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { Webhook } from 'svix';
 import prisma from '../../../lib/db';
 
+
 const webhookSecret = process.env.WEBHOOK_SECRET;
 
 export async function handler(request) {

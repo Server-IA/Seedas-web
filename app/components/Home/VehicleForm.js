@@ -8,7 +8,7 @@ const VehicleForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission
+    // Aquí podrías enviar la información de vehículo junto con la ubicación del conductor seleccionada
   };
 
   return (
@@ -63,3 +63,4 @@ const VehicleForm = () => {
 };
 
 export default VehicleForm;
+
