@@ -47,7 +47,7 @@ function Header() {
     return (
         <div className='p-5 pb-3 pl-10 border-b-[2px] border-gray-200 flex items-center justify-between' style={{ backgroundColor: '#212626' }}>
             <div className='flex gap-24 items-center'>
-                <a href="/page">
+                <a href="/indexPage">
                     <Image 
                         src='/LOGO-SEEDAS.jpg'
                         width={70}

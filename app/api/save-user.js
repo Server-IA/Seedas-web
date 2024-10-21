@@ -1,4 +1,4 @@
-// app/api/save-user.js
+/*// app/api/save-user.js
 
 import { NextResponse } from 'next/server';
 import prisma from '@./prisma';
@@ -17,4 +17,4 @@ export async function POST(request) {
   } catch (error) {
     return NextResponse.json({ error: 'Error saving user' }, { status: 500 });
   }
-}
+} */

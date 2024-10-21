@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { Webhook } from 'svix';
 import prisma from '../../../lib/db';
 
+
 const webhookSecret = process.env.WEBHOOK_SECRET;
 
 export async function handler(request) {
@@ -28,22 +29,33 @@ export async function handler(request) {
 
   if (eventType === 'user.created') {
     const userData = evt.data;
-    const { id, email_addresses, first_name, last_name, image_url, primary_email_address_id } = userData;
+    const { id, email_addresses, full_name, image_url, primary_email_address_id, external_id, clerk_id, posts, created_at, updated_at } = userData;
 
-    const email = email_addresses.find(email => email.id === primary_email_address_id).email_address;
+    // Asegúrate de que este valor sea correcto y existe
+    const email = email_addresses.find(email => email.id === primary_email_address_id)?.email_address;
+
+    // Verifica si el correo electrónico es válido
+    if (!email) {
+      console.error('No valid email found for user:', userData);
+      return NextResponse.json({ error: 'No valid email found' }, { status: 400 });
+    }
 
     try {
       await prisma.user.create({
         data: {
-          externalId: id,
-          firstName: first_name,
-          lastName: last_name,
-          email: email,
+          id: id,
+          email: email, // Guarda solo el correo electrónico
+          fullName: full_name,
           imageUrl: image_url,
+          externalId: external_id,
+          clerkId: clerk_id,
+          posts: posts,
+          createdAt: created_at,
+          updatedAt: updated_at,
         },
       });
     } catch (error) {
-      console.error('Error saving user to database:', error.message);
+      console.error('Error saving user to database:', error); // Más información del error
       return NextResponse.json({ error: 'Error saving user to database' }, { status: 500 });
     }
   }
@@ -51,6 +63,10 @@ export async function handler(request) {
   return NextResponse.json({ received: true });
 }
 
-export const POST = handler;
-export const GET = handler;
-export const PUT = handler;
+export async function GET() {
+  return NextResponse.json({ message: 'GET request received' });
+}
+
+export async function PUT(request) {
+  return NextResponse.json({ message: 'PUT request received' });
+}

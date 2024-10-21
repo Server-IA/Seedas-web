@@ -1,39 +1,44 @@
-import React, { useState, useEffect, useContext } from 'react';
+'use client';
+import React, { useContext, useEffect, useState } from 'react';
 import InputItem from './InputItem';
 import { SourceContext } from '../../context/SourceContext';
 import { DestinationContext } from '../../context/DestinationContext';
+import MapboxMap from './MapboxMap';
 import CarListOptions from './CarListOptions';
 
 function SearchSection() {
-  const { source, setSource } = useContext(SourceContext);
-  const { destination, setDestination } = useContext(DestinationContext);
+  const { source } = useContext(SourceContext);
+  const { destination } = useContext(DestinationContext);
   const [distance, setDistance] = useState(null);
 
   useEffect(() => {
-    if (source) {
-      console.log(source);
+    if (source && destination) {
+      const R = 6371; // Radio de la Tierra en km
+      const dLat = (destination.lat - source.lat) * (Math.PI / 180);
+      const dLng = (destination.lng - source.lng) * (Math.PI / 180);
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(source.lat * (Math.PI / 180)) *
+          Math.cos(destination.lat * (Math.PI / 180)) *
+          Math.sin(dLng / 2) * Math.sin(dLng / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      const dist = R * c; // Distancia en km
+      setDistance(dist);
     }
-    if (destination) {
-      console.log("--", destination);
-    }
-    // Calculate distance here if needed
-    // setDistance(value); // Update distance value if necessary
   }, [source, destination]);
 
   return (
     <div>
-    <div className='p-2 md:-6 border-[2px] rounded-xl'>
-      <p className='text-[20px] font-bold'>Necesitas transporte</p>
-      <InputItem type='source' />
-      <InputItem type='destination' />
-      <button className='p-4 bg-black w-full mt-5 text-white rounded-lg'
-      onClick={()=>calculateDistance()}>Buscar</button>
-      
-      {distance ? <CarListOptions distance={distance} /> : null}
+      <div className='p-2 md:-6 border-[2px] rounded-xl'>
+        <p className='text-[20px] font-bold'>Enter your locations</p>
+        <InputItem type='source' />
+        <InputItem type='destination' />
+        {distance && <p>Distance: {distance.toFixed(2)} km</p>}
+      </div>
+     <CarListOptions/>
     </div>
-    <CarListOptions/>
-    </div>
-  )
+  );
 }
 
-export default SearchSection
+export default SearchSection;
+

@@ -13,7 +13,7 @@ export const CarListData=[
         name:'carro2',
         seat:4,
         desc:'prrrrrr rides',
-        amount:1.1,
+        amount:1.2,
         image:'/LOGO-SEEDAS.jpg'
     },
     {
@@ -21,7 +21,7 @@ export const CarListData=[
         name:'carro3',
         seat:4,
         desc:'zzzzzzzzzzzzzzzz rides',
-        amount:1.1,
+        amount:2.1,
         image:'/LOGO-SEEDAS.jpg'
     }
 ] ;

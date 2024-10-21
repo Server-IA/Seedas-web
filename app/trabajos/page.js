@@ -108,7 +108,7 @@ const ZonaDeTrabajo = () => {
                 </div>
                 <button 
                     onClick={handleSearch} 
-                    className="bg-blue-500 text-white px-4 py-2 rounded"
+                    className="bg-black text-white px-4 py-2 rounded"
                 >
                     Buscar
                 </button>
@@ -116,7 +116,7 @@ const ZonaDeTrabajo = () => {
 
             <div className="mb-10">
                 <h2 className="text-2xl font-bold mb-3">Mapa</h2>
-                <LoadScript googleMapsApiKey="YOUR_GOOGLE_MAPS_API_KEY">
+                <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
                     <GoogleMap
                         mapContainerStyle={containerStyle}
                         center={center}
