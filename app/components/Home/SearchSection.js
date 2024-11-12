@@ -53,7 +53,7 @@ function SearchSection() {
         {price && (
           <div>
             <p>Precio estimado: ${price} pesos</p>
-            <button onClick={handlePayment} className="mt-3 bg-blue-500 text-white p-2 rounded">
+            <button onClick={handlePayment} className="mt-3 bg-gray-900 text-white p-2 rounded">
               Ir al pago
             </button>
           </div>
