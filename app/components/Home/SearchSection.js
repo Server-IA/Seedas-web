@@ -9,10 +9,11 @@ function SearchSection() {
   const { source } = useContext(SourceContext);
   const { destination } = useContext(DestinationContext);
   const [price, setPrice] = useState(null);
+  const [selectedCar, setSelectedCar] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
-    if (source && destination) {
+    if (source && destination && selectedCar) {
       const R = 6371; // Radio de la Tierra en km
       const dLat = (destination.lat - source.lat) * (Math.PI / 180);
       const dLng = (destination.lng - source.lng) * (Math.PI / 180);
@@ -24,14 +25,22 @@ function SearchSection() {
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       const dist = R * c;
 
-      const baseRate = 2000; // Precio base en pesos por km
-      const calculatedPrice = dist * baseRate;
-      setPrice(calculatedPrice.toFixed(2));
+      // Ajuste de precio por km basado en la distancia
+      const baseRate = dist > 300 ? 2500 : 2000; // Subir precio base si la distancia es mayor a 300 km
+      const calculatedPrice = (selectedCar.amount * dist * (baseRate / 1000)).toFixed(2);
+      setPrice(calculatedPrice);
     }
-  }, [source, destination]);
+  }, [source, destination, selectedCar]);
 
   const handlePayment = () => {
-    router.push(`/payment?amount=${price}`);
+    if (price) {
+      const paymentMethod = window.confirm("¿Desea pagar en efectivo?");
+      if (paymentMethod) {
+        alert("Pago confirmado en efectivo. Gracias por usar nuestro servicio.");
+      } else {
+        router.push(`/payment?amount=${price}`);
+      }
+    }
   };
 
   return (
@@ -40,7 +49,7 @@ function SearchSection() {
         <p className='text-[20px] font-bold'>Enter your locations</p>
         <InputItem type='source' />
         <InputItem type='destination' />
-        <CarListOptions/>
+        <CarListOptions distance={price ? parseFloat(price) : 0} setSelectedCar={setSelectedCar} />
         {price && (
           <div>
             <p>Precio estimado: ${price} pesos</p>
