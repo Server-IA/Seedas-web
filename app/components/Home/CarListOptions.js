@@ -1,7 +1,6 @@
-// CarListOptions.js
 import { CarListData } from '../../../utils/CarListData';
-import React, { useState } from 'react'
-import CarListItem from './CarListItem'
+import React, { useState } from 'react';
+import CarListItem from './CarListItem';
 import { useRouter } from 'next/navigation';
 
 function CarListOptions({ distance }) {
@@ -9,18 +8,18 @@ function CarListOptions({ distance }) {
   const [selectedCar, setSelectedCar] = useState(null);
   const router = useRouter();
 
-
   return (
     <div className='mt-5 p-5 overflow-auto h-[250px]'>
       <h2 className='text-[22px] font-bold'>Recomendado</h2>
       {CarListData.map((item, index) => (
         <div
-        key={item.id}
+          key={item.id}
           className={`cursor-pointer p-2 px-4 rounded-md border-black ${activeIndex === index ? 'border-[3px]' : ''}`}
           onClick={() => {
             setActiveIndex(index);
             setSelectedCar(item);
-          }}>
+          }}
+        >
           <CarListItem car={item} distance={distance} />
         </div>
       ))}
@@ -29,7 +28,16 @@ function CarListOptions({ distance }) {
           <h2>Hacer Pago</h2>
           <button
             className='p-3 bg-black text-white rounded-lg text-center'
-            onClick={() => router.push(`/payment?amount=${(selectedCar.amount * distance).toFixed(2)}`)}>
+            onClick={() => {
+              const amount = (selectedCar.amount * distance).toFixed(2);
+              const paymentMethod = window.confirm("¿Desea pagar en efectivo?");
+              if (paymentMethod) {
+                alert("Pago confirmado en efectivo. Gracias por usar nuestro servicio.");
+              } else {
+                router.push(`/payment?amount=${amount}`);
+              }
+            }}
+          >
             Solicitar {selectedCar.name}
           </button>
         </div>
@@ -39,3 +47,4 @@ function CarListOptions({ distance }) {
 }
 
 export default CarListOptions;
+

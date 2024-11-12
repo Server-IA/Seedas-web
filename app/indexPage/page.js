@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState } from 'react';
 import SearchSection from '../components/Home/SearchSection';
@@ -6,9 +6,9 @@ import { SourceContext } from '../context/SourceContext';
 import { DestinationContext } from '../context/DestinationContext';
 import MapboxMap from '../components/Home/MapboxMap';
 
-export default function indexPage() {
-    const [source, setSource] = useState([]);
-    const [destination, setDestination] = useState([]);
+export default function IndexPage() {
+    const [source, setSource] = useState(null);
+    const [destination, setDestination] = useState(null);
 
     return (
         <SourceContext.Provider value={{ source, setSource }}>

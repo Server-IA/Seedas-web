@@ -1,15 +1,15 @@
-'use client';
 import React, { useContext, useEffect, useState } from 'react';
 import InputItem from './InputItem';
 import { SourceContext } from '../../context/SourceContext';
 import { DestinationContext } from '../../context/DestinationContext';
-import MapboxMap from './MapboxMap';
+import { useRouter } from 'next/navigation';
 import CarListOptions from './CarListOptions';
 
 function SearchSection() {
   const { source } = useContext(SourceContext);
   const { destination } = useContext(DestinationContext);
-  const [distance, setDistance] = useState(null);
+  const [price, setPrice] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (source && destination) {
@@ -22,10 +22,17 @@ function SearchSection() {
           Math.cos(destination.lat * (Math.PI / 180)) *
           Math.sin(dLng / 2) * Math.sin(dLng / 2);
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-      const dist = R * c; // Distancia en km
-      setDistance(dist);
+      const dist = R * c;
+
+      const baseRate = 2000; // Precio base en pesos por km
+      const calculatedPrice = dist * baseRate;
+      setPrice(calculatedPrice.toFixed(2));
     }
   }, [source, destination]);
+
+  const handlePayment = () => {
+    router.push(`/payment?amount=${price}`);
+  };
 
   return (
     <div>
@@ -33,12 +40,18 @@ function SearchSection() {
         <p className='text-[20px] font-bold'>Enter your locations</p>
         <InputItem type='source' />
         <InputItem type='destination' />
-        {distance && <p>Distance: {distance.toFixed(2)} km</p>}
+        <CarListOptions/>
+        {price && (
+          <div>
+            <p>Precio estimado: ${price} pesos</p>
+            <button onClick={handlePayment} className="mt-3 bg-blue-500 text-white p-2 rounded">
+              Ir al pago
+            </button>
+          </div>
+        )}
       </div>
-     <CarListOptions/>
     </div>
   );
 }
 
 export default SearchSection;
-
