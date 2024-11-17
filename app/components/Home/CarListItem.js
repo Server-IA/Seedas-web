@@ -16,10 +16,10 @@ function CarListItem({ car, distance }) {
                                 <HiUser />{car.seat}
                             </span>
                         </h2>
-                        <p>{car.desc}</p>
+                        <p>{car.amount}</p>
                     </div>
                 </div>
-                <h2 className='text-[18px] font-semibold'>
+                <h2 className='text-[13px] font-semibold'>
                     ${(car.amount*distance).toFixed(2)}
                 </h2>
             </div>

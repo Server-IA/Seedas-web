@@ -12,29 +12,44 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  fullName String?
-  imageUrl  String?
-  externalId String @unique
-  clerkId   String?  // Agregamos el campo clerkId
-  posts     Post[]   @relation("UserPosts")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+model User {  
+  id        String   @id @default(uuid())  
+  email     String   @unique  
+  fullName  String?  
+  imageUrl  String?  
+  externalId String  @unique  
+  clerkId   String?  // Agregamos el campo clerkId  
+  posts     Post[]   @relation("UserPublication")  
+  publications Publication[] // Add this relation if you want to list publications  
+  createdAt DateTime @default(now())  
+  updatedAt DateTime @updatedAt  
+}  
 
+model Post {  
+  id        Int      @id @default(autoincrement())  
+  title     String  
+  content   String  
+  userId    String   // Changed field type to String to match User.id  
+  createdAt DateTime @default(now())  
+  updatedAt DateTime @updatedAt  
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  authorId  String
-  author    User     @relation(fields: [authorId], references: [id], name: "UserPosts")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+  User      User     @relation("UserPublication", fields: [userId], references: [id]) // Correct the usage of @relation  
+}  
+
+model Publication {  
+  id             Int      @id @default(autoincrement())  
+  userId         String   // Changed field type to String to match User.id  
+  pickupLocation String   // Puede ser JSON con latitud/longitud  
+  dropoffLocation String  // Puede ser JSON con latitud/longitud  
+  zoneId         String   // Zona identificadora (código postal, región)  
+  vehicleType    String  
+  paymentMethod  String   // "card" o "cash"  
+  status         String   // "pending", "active", "completed"  
+  createdAt      DateTime @default(now())  
+  updatedAt      DateTime @updatedAt  
+
+  User           User     @relation(fields: [userId], references: [id]) // Correct relation syntax  
+}  
 
 // Modelo para el Productor
 model Productor {
