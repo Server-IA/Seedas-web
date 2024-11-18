@@ -1,29 +1,28 @@
+// pages/TransportPage.js
 'use client';
-import React, { useState } from 'react';
-import SearchSectionTrans from '../components/Home/SearchSectionTrans';
-import VehicleForm from '../components/Home/VehicleForm';
-import { SourceContext } from '../context/SourceContext';
-import { DestinationContext } from '../context/DestinationContext';
-import MapboxMapTrans from '../components/Home/MapboxTranspor';
 
-export default function TransportaPage() {
-const [source, setSource] = useState([]) ;
-const [destination, setDestination] = useState([]) ;
+import React, { useState } from 'react';
+import { VehSourceContext } from '../context/VehSourceContext';
+import { VehRadiusContext } from '../context/VehRadiusContext';
+import VehInputItem from '../components/Home/VehInputItem';
+import VehMapbox from '../components/Home/VehMapbox';
+
+export default function TransportPage() {
+  const [source, setSource] = useState(null);
+  const [radius, setRadius] = useState(5);  // Set default radius to 5 km
+
   return (
-    <SourceContext.Provider value={{ source, setSource }}>
-          <DestinationContext.Provider value={{ destination, setDestination }}>
-    <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-5">
+    <VehSourceContext.Provider value={{ source, setSource }}>
+      <VehRadiusContext.Provider value={{ radius, setRadius }}>
+        <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
           <div>
-         
-            <SearchSectionTrans type="source" placeholder="Ubicación de recogida" />
-            <VehicleForm />
+            <VehInputItem type="source" />  {/* Input for address */}
           </div>
-          <div className="col-span-2">
-            <MapboxMapTrans />
+          <div>
+            <VehMapbox />  {/* Map that displays the selected address */}
           </div>
         </div>
-        </DestinationContext.Provider>
-        </SourceContext.Provider>
+      </VehRadiusContext.Provider>
+    </VehSourceContext.Provider>
   );
 }
-

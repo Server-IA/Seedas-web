@@ -8,7 +8,7 @@ import { DestinationContext } from '../../context/DestinationContext';
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 
-const MapboxMapTrans = () => {
+const ZoneMap = () => {
   const [map, setMap] = useState(null); // Estado para almacenar la instancia del mapa
   const [center, setCenter] = useState([-74.08175, 4.60971]); // Centro predeterminado (Bogotá)
   const { sourceLocation } = useContext(SourceContext); // Ubicación fuente desde el contexto
@@ -51,4 +51,4 @@ const MapboxMapTrans = () => {
   return <div id="map" style={{ width: '100%', height: '400px' }} />;
 };
 
-export default MapboxMapTrans;
+export default ZoneMap;

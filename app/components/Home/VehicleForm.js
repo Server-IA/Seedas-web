@@ -1,93 +1,94 @@
-import React, { useState } from 'react';
-import { CarListData } from '../../../utils/CarListData';
+'use client';  // Indica que este es un componente del lado del cliente
 
-const VehicleForm = () => {
-  const [vehicle, setVehicle] = useState('');
-  const [workingHours, setWorkingHours] = useState({ start: '', end: '' });
-  const [contact, setContact] = useState({ name: '', phone: '' });
-  const [image, setImage] = useState(null); // Estado para almacenar la imagen
+import React from 'react';
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Aquí puedes enviar la información de vehículo junto con la ubicación del conductor seleccionada y la imagen
-  };
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      // Aquí puedes agregar lógica para verificar que el archivo sea una imagen si lo deseas
-      setImage(URL.createObjectURL(file)); // Esto creará una URL local para mostrar la imagen cargada
-    }
-  };
-
+function VehicleForm({
+  vehicle, setVehicle, workingHours, setWorkingHours, contact, setContact,
+  passengers, setPassengers, image, setImage, radius, setRadius
+}) {
   return (
-    <form onSubmit={handleSubmit} className="bg-slate-200 p-6 rounded-lg mt-3">
-      <div>
-        <label>Tipo de Vehículo</label>
-        <select
+    <>
+      <div className="mb-4">
+        <label>Vehículo</label>
+        <input
+          type="text"
           value={vehicle}
           onChange={(e) => setVehicle(e.target.value)}
-          className="w-full p-2 mt-2 mb-4 rounded"
-        >
-          {CarListData.slice(0, 3).map((car) => (
-            <option key={car.id} value={car.name}>
-              {car.name}
-            </option>
-          ))}
-        </select>
+          placeholder="Ingrese el tipo de vehículo"
+          className="w-full p-2 mt-2 rounded"
+        />
       </div>
-      <div>
-        <label>Horas de Trabajo</label>
-        <div className="flex gap-4 mt-2 mb-4">
-          <input
-            type="time"
-            value={workingHours.start}
-            onChange={(e) => setWorkingHours({ ...workingHours, start: e.target.value })}
-            className="w-full p-2 rounded"
-          />
-          <input
-            type="time"
-            value={workingHours.end}
-            onChange={(e) => setWorkingHours({ ...workingHours, end: e.target.value })}
-            className="w-full p-2 rounded"
-          />
-        </div>
+
+      <div className="mb-4">
+        <label>Horario de trabajo</label>
+        <input
+          type="text"
+          value={workingHours.start}
+          onChange={(e) => setWorkingHours({ ...workingHours, start: e.target.value })}
+          placeholder="Hora de inicio"
+          className="w-full p-2 mt-2 rounded"
+        />
+        <input
+          type="text"
+          value={workingHours.end}
+          onChange={(e) => setWorkingHours({ ...workingHours, end: e.target.value })}
+          placeholder="Hora de fin"
+          className="w-full p-2 mt-2 rounded"
+        />
       </div>
-      <div>
-        <label>Nombre</label>
+
+      <div className="mb-4">
+        <label>Contacto</label>
         <input
           type="text"
           value={contact.name}
           onChange={(e) => setContact({ ...contact, name: e.target.value })}
-          className="w-full p-2 mt-2 mb-4 rounded"
+          placeholder="Nombre de contacto"
+          className="w-full p-2 mt-2 rounded"
         />
-      </div>
-      <div>
-        <label>Teléfono</label>
         <input
           type="text"
           value={contact.phone}
           onChange={(e) => setContact({ ...contact, phone: e.target.value })}
-          className="w-full p-2 mt-2 mb-4 rounded"
+          placeholder="Teléfono"
+          className="w-full p-2 mt-2 rounded"
         />
       </div>
-      <div>
-        <label>Imagen del Vehículo</label>
+
+      <div className="mb-4">
+        <label>Pasajeros</label>
+        <input
+          type="number"
+          value={passengers}
+          onChange={(e) => setPassengers(Number(e.target.value))}
+          min="1"
+          className="w-full p-2 mt-2 rounded"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label>Imagen</label>
         <input
           type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-          className="w-full p-2 mt-2 mb-4 rounded"
+          onChange={e => setImage(URL.createObjectURL(e.target.files[0]))}
+          className="w-full p-2 mt-2 rounded"
         />
-        {image && (
-          <div className="mt-4">
-            <img src={image} alt="Vista previa" className="w-32 h-32 object-cover rounded" />
-          </div>
-        )}
+        {image && <img src={image} alt="Imagen del vehículo" className="mt-2" />}
       </div>
-      <button type="submit" className="bg-black text-white px-4 py-2 rounded">Enviar</button>
-    </form>
+
+      <div className="mb-4">
+        <label>Radio</label>
+        <input
+          type="number"
+          value={radius}
+          onChange={(e) => setRadius(Number(e.target.value))}
+          min="1"
+          max="50"
+          className="w-full p-2 mt-2 rounded"
+        />
+      </div>
+    </>
   );
-};
+}
 
 export default VehicleForm;

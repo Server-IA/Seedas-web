@@ -2,7 +2,7 @@ export const CarListData=[
 
     {
         id:1,
-        name:'carro1',
+        name:'moto',
         seat:0,
         desc:'22 rides',
         amount:1000,
@@ -10,7 +10,7 @@ export const CarListData=[
     },
     {
         id:2,
-        name:'carro2',
+        name:'carro',
         seat:2,
         desc:'44 rides',
         amount:4000,
@@ -18,7 +18,7 @@ export const CarListData=[
     },
     {
         id:3,
-        name:'carro3',
+        name:'camioneta',
         seat:1,
         desc:'1 rides',
         amount:8000,

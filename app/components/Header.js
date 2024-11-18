@@ -1,4 +1,4 @@
-'use client';  // Indica que este componente se ejecuta en el cliente
+'use client'; 
 import React, { useEffect } from 'react';
 import Image from 'next/image';
 import { UserButton, useUser } from '@clerk/nextjs';
@@ -22,7 +22,7 @@ function Header() {
             id: 3,
             name: 'zona de trabajo',
             icon: '/logo-usuario.jpg',
-            link: '/trabajos' 
+            link: '/zonaTrabajo' 
         }
     ];
 
