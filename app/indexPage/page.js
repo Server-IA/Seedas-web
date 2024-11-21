@@ -6,6 +6,7 @@ import { DestinationContext } from '../context/DestinationContext';
 import MapboxMap from '../components/Home/MapboxMap';
 
 export default function IndexPage() {
+    // Inicializa source y destination como null
     const [source, setSource] = useState(null);
     const [destination, setDestination] = useState(null);
 
@@ -17,7 +18,7 @@ export default function IndexPage() {
                         <SearchSection />
                     </div>
                     <div className="col-span-2">
-                        <MapboxMap /> 
+                        <MapboxMap />
                     </div>
                 </div>
             </DestinationContext.Provider>
