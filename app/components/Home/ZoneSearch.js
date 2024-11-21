@@ -25,8 +25,8 @@ const ZoneSearch = ({ onSearch }) => {
                     className="p-2 border rounded w-full md:w-1/2"
                 >
                     <option value="all">Todos</option>
-                    <option value="productor">Productor</option>
-                    <option value="transportador">Transportador</option>
+                    <option value="productor" className='col col-span-2'>Productor</option>
+                    <option value="transportador" className='col col-span-2'>Transportador</option>
                 </select>
             </div>
             <button

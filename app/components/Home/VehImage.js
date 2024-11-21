@@ -1,7 +1,5 @@
-'use client';
-
 import React, { useState } from 'react';
-import { uploadImage } from '../../firebase/firebaseVeh'; // Importar la función para subir imágenes
+import { uploadImage } from '../../firebase/firebaseVeh';
 
 function VehImage({ images, setImages }) {
   const [previewImages, setPreviewImages] = useState([]);
@@ -10,9 +8,8 @@ function VehImage({ images, setImages }) {
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
     setUploading(true);
-
     try {
-      const urls = await Promise.all(files.map((file) => uploadImage(file))); // Subir todas las imágenes
+      const urls = await Promise.all(files.map((file) => uploadImage(file)));
       setImages((prev) => [...prev, ...urls]);
       const preview = files.map((file) => URL.createObjectURL(file));
       setPreviewImages((prev) => [...prev, ...preview]);
@@ -31,7 +28,7 @@ function VehImage({ images, setImages }) {
 
   return (
     <div className="mt-4">
-      <label className="block mb-2 font-semibold">Sube imágenes del vehículo:</label>
+      <label className="block mb-2 font-semibold">Sube 2 imágenes del vehículo:</label>
       <input
         type="file"
         accept="image/*"
@@ -40,7 +37,7 @@ function VehImage({ images, setImages }) {
         className="p-2 border rounded w-full"
       />
       {uploading && <p className="mt-2 text-blue-500">Subiendo imágenes...</p>}
-      <div className="mt-2 grid grid-cols-3 gap-2">
+      <div className="grid mt-2 grid-cols-3 gap-2">
         {previewImages.map((src, index) => (
           <div key={index} className="relative">
             <img src={src} alt={`Imagen ${index}`} className="w-full h-20 object-cover rounded" />
