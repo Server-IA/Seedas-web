@@ -1,11 +1,9 @@
 'use client'
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
 import { useSearchParams } from "next/navigation";
 import React from "react";
-import CheckoutForm from "./../components/Home/CheckoutForm";
+import Payment from "../components/payment";
 
-function Payment() {
+function PaymentPage() {
     const searchParam = useSearchParams();
     const amount = parseFloat(searchParam.get('amount'));
 
@@ -13,18 +11,9 @@ function Payment() {
         return <div>Error: Monto inválido</div>;
     }
 
-    const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHER_KEY);
-    const options = {
-        mode: 'payment',
-        amount: Math.round(amount * 100),
-        currency: 'usd'
-    };
-
     return (
-        <Elements stripe={stripePromise} options={options}>
-            <CheckoutForm amount={amount} />
-        </Elements>
+        <Payment price={amount} />
     );
 }
 
-export default Payment;
+export default PaymentPage;
