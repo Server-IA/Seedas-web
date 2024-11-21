@@ -8,19 +8,19 @@ function Header() {
     const headerMenu = [
         {
             id: 2,
-            name: 'usuario',
+            name: 'PRODUCTOR',
             icon: '/logo-usuario.jpg',
             link: '/indexPage' 
         },
         {
             id: 1,
-            name: 'transporta',
+            name: 'TRANSPORTADOR',
             icon: '/logo-carro.jpg',
             link: '/trasportaPage'  
         },
         {
             id: 3,
-            name: 'zona de trabajo',
+            name: 'ZONA DE TRABAJO',
             icon: '/logo-usuario.jpg',
             link: '/zonaTrabajo' 
         }
