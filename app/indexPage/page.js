@@ -1,31 +1,31 @@
-'use client';
-import React, { useState } from 'react';
-import SearchSection from '../components/Home/SearchSection';
-import { SourceContext } from '../context/SourceContext';
-import { DestinationContext } from '../context/DestinationContext';
-import MapboxMap from '../components/Home/MapboxMap';
-import Contain from '../components/Home/Contain';
+'use client';  
 
-export default function IndexPage() {
-    // Inicializa source y destination como null
-    const [source, setSource] = useState(null);
-    const [destination, setDestination] = useState(null);
+import React, { useState } from 'react';  
+import SearchSection from '../components/Home/SearchSection';  
+import { SourceContext } from '../context/SourceContext';  
+import { DestinationContext } from '../context/DestinationContext';  
+import MapboxMap from '../components/Home/MapboxMap';  
+import Contain from '../components/Home/Contain';  
 
-    return (
-        <SourceContext.Provider value={{ source, setSource }}>
-            <DestinationContext.Provider value={{ destination, setDestination }}>
-                <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-5">
-                    <div>
-                        <SearchSection />
-                    </div>
-                    <div className="col-span-2">
-                        <MapboxMap />
-                    </div>
-                    <div>
-                        <Contain/>
-                    </div>
-                </div>
-            </DestinationContext.Provider>
-        </SourceContext.Provider>
-    );
+export default function IndexPage() {  
+    const [source, setSource] = useState(null);  
+    const [destination, setDestination] = useState(null);  
+
+    return (  
+        <SourceContext.Provider value={{ source, setSource }}>  
+            <DestinationContext.Provider value={{ destination, setDestination }}>  
+                <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-5">  
+                    <div>  
+                        <SearchSection />  
+                    </div>  
+                    <div className="col-span-2">  
+                        <MapboxMap />  
+                    </div>  
+                </div>  
+                <div className="p-4 bg-white border rounded shadow-md w-full max-w-full">  
+                    <Contain />  
+                </div>  
+            </DestinationContext.Provider>  
+        </SourceContext.Provider>  
+    );  
 }

@@ -57,7 +57,6 @@ function SearchSection() {
 
     const ProductoresData = {
       userId,
-      email,
       source,
       destination,
       vehicle: selectedCar.name,
@@ -154,8 +153,7 @@ function SearchSection() {
         )}
       </div>
 
-      {/* Contenedor para las publicaciones del usuario */}
-      <Contain publications={userPublications} />
+
     </div>
   );
 }

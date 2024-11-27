@@ -1,36 +1,57 @@
+"use client";
 import React from 'react';
-import { deletePublicationFromFirestore } from '../../firebase/firebaseUtils';
+import { useAuth } from '@clerk/nextjs'; // Para obtener el usuario autenticado
+import { deletePublication } from '../../firebase/firebaseUtils'; // Asegúrate de importar la función deletePublication
 
-function Details({ data }) {
+const Details = ({ publicacion }) => {
+  const { user } = useAuth(); // Obtener el usuario autenticado
+
+  if (!publicacion) {
+    return null;
+  }
+
+  // Función para eliminar la publicación
   const handleDelete = async () => {
-    try {
-      await deletePublicationFromFirestore(data.id);
-      alert('Publicación eliminada con éxito.');
-    } catch (error) {
-      console.error('Error al eliminar la publicación:', error);
-      alert('Hubo un error al eliminar la publicación.');
+    const confirm = window.confirm('¿Estás seguro de que deseas eliminar esta publicación?');
+    if (confirm) {
+      try {
+        await deletePublication(publicacion.id); // Eliminar publicación de Firebase
+        alert('Publicación eliminada correctamente');
+      } catch (error) {
+        alert('Error al eliminar la publicación');
+        console.error('Error al eliminar la publicación:', error);
+      }
     }
   };
 
+  // Verificar si la publicación pertenece al usuario autenticado
+  if (user?.id !== publicacion.userId) {
+    return null; // No mostrar si la publicación no pertenece al usuario
+  }
+
   return (
-    <div className="p-4 border rounded-md mb-4">
-      <p><strong>Ubicación de origen:</strong> {data.source.name}</p>
-      <p><strong>Ubicación de destino:</strong> {data.destination.name}</p>
-      <p><strong>Vehículo:</strong> {data.vehicle}</p>
-      <p><strong>Peso:</strong> {data.weight} kg</p>
-      <p><strong>Precio:</strong> ${data.price} pesos</p>
-      <p><strong>Tipo de carga:</strong> {data.merchandise.type}</p>
-      {data.merchandise.type === 'otros' && (
-        <p><strong>Descripción:</strong> {data.merchandise.description}</p>
-      )}
-      <button
-        onClick={handleDelete}
-        className="mt-2 bg-red-500 text-white px-4 py-2 rounded"
-      >
-        Eliminar
-      </button>
+    <div className="p-4 border rounded-md shadow-md w-full">
+      <h3 className="text-xl font-semibold">Detalles del Trabajo</h3>
+      <p><strong>Origen:</strong> {publicacion.source.name}</p>
+      <p><strong>Destino:</strong> {publicacion.destination.name}</p>
+      <p><strong>Teléfono:</strong> {publicacion.phone}</p>
+      <p><strong>Vehículo:</strong> {publicacion.vehicle}</p>
+      <p><strong>Precio:</strong> ${parseFloat(publicacion.price).toLocaleString('es-CO')} COP</p>
+      <p><strong>Fecha:</strong> {publicacion.workingHours.date}</p>
+      <p><strong>Horario:</strong> {publicacion.workingHours.start} - {publicacion.workingHours.end}</p>
+      <p><strong>Peso:</strong> {publicacion.weight} kg</p>
+      <div className="mt-4 flex gap-2">
+        {user && publicacion.userId === user.id && (
+          <button
+            onClick={handleDelete}
+            className="bg-red-600 text-white px-2 py-1.5 rounded-md ml-2"
+          >
+            Eliminar Publicación
+          </button>
+        )}
+      </div>
     </div>
   );
-}
+};
 
 export default Details;
