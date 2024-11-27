@@ -5,8 +5,9 @@ import { DestinationContext } from '../../context/DestinationContext';
 import { useRouter } from 'next/navigation';
 import CarListOptions from './CarListOptions';
 import DateSelector from './DateSelector';
-import { saveProductoresToFirestore } from '../../firebase/firebaseUtils';
-import { useAuth } from '@clerk/nextjs'; // Importa el hook de Clerk para obtener la info del usuario
+import Merchandise from './Merchandise'; // Importa el componente Merchandise
+import { saveProductoresToFirestore, getUserPublications } from '../../firebase/firebaseUtils';
+import { useAuth } from '@clerk/nextjs';
 
 function SearchSection() {
   const { source } = useContext(SourceContext);
@@ -14,11 +15,14 @@ function SearchSection() {
   const [price, setPrice] = useState(null);
   const [selectedCar, setSelectedCar] = useState(null);
   const [workingHours, setWorkingHours] = useState({ date: '', start: '', end: '' });
-  const [weight, setWeight] = useState(0); // Estado para el peso
-  const [phone, setPhone] = useState(''); // Estado para el teléfono
+  const [weight, setWeight] = useState(0);
+  const [phone, setPhone] = useState('');
+  const [merchandiseData, setMerchandiseData] = useState({ type: '', description: '' });
+  const [userPublications, setUserPublications] = useState([]);
   const router = useRouter();
-  const { user } = useAuth(); // Obtiene el usuario autenticado a través de Clerk
-  const email = user ? user.primaryEmailAddress : ''; // Obtiene el correo del usuario
+  const { user } = useAuth(); // Obtiene la información del usuario autenticado
+  const email = user?.primaryEmailAddress || '';
+  const userId = user?.id || '';
 
   // Cálculo del precio basado en la distancia, tipo de vehículo y peso
   useEffect(() => {
@@ -35,7 +39,7 @@ function SearchSection() {
       const dist = R * c;
 
       const baseRate = dist > 300 ? 2500 : 2000;
-      const weightFactor = weight > 500 ? 1.5 : 1.0; // Incremento por peso mayor a 500 kg
+      const weightFactor = weight > 500 ? 1.5 : 1.0;
       const calculatedPrice = (
         selectedCar.amount * dist * (baseRate / 1000) * weightFactor
       ).toFixed(2);
@@ -46,28 +50,31 @@ function SearchSection() {
 
   // Manejo del pago y guardado de datos
   const handlePayment = async (paymentMethod) => {
-    if (!source || !destination || !selectedCar || !workingHours.date || weight <= 0 || !phone) {
+    if (!source || !destination || !selectedCar || !workingHours.date || weight <= 0 || !phone || !merchandiseData.type) {
       alert('Por favor, completa todos los campos antes de continuar.');
       return;
     }
 
     const ProductoresData = {
+      userId,
+      email,
       source,
       destination,
       vehicle: selectedCar.name,
       price,
-      weight, // Incluye el peso en los datos guardados
+      weight,
       workingHours,
-      phone, // Agrega el teléfono a los datos guardados
-      email, // Agrega el correo a los datos guardados (sin validación)
+      phone,
+      merchandise: merchandiseData,
       paymentMethod,
     };
 
-    // Guardar datos en Firestore
     try {
       await saveProductoresToFirestore(ProductoresData);
 
-      // Redirigir según método de pago
+      // Actualiza la lista de publicaciones del usuario
+      fetchUserPublications();
+
       if (paymentMethod === 'online') {
         router.push(`/payment?amount=${price}`);
       } else {
@@ -79,6 +86,22 @@ function SearchSection() {
       alert('Hubo un error al guardar la información. Por favor, inténtalo nuevamente.');
     }
   };
+
+  const fetchUserPublications = async () => {
+    try {
+      const publications = await getUserPublications(userId);
+      setUserPublications(publications);
+    } catch (error) {
+      console.error('Error al cargar las publicaciones:', error);
+    }
+  };
+
+  // Cargar publicaciones del usuario autenticado al montar el componente
+  useEffect(() => {
+    if (userId) {
+      fetchUserPublications();
+    }
+  }, [userId]);
 
   return (
     <div>
@@ -109,6 +132,7 @@ function SearchSection() {
             placeholder="Ingresa el peso de la carga"
           />
         </div>
+        <Merchandise setMerchandiseData={setMerchandiseData} />
         <CarListOptions distance={price ? parseFloat(price) : 0} setSelectedCar={setSelectedCar} />
         <DateSelector setWorkingHours={setWorkingHours} />
         {price && (
@@ -129,6 +153,9 @@ function SearchSection() {
           </div>
         )}
       </div>
+
+      {/* Contenedor para las publicaciones del usuario */}
+      <Contain publications={userPublications} />
     </div>
   );
 }

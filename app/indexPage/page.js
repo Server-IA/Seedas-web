@@ -4,6 +4,7 @@ import SearchSection from '../components/Home/SearchSection';
 import { SourceContext } from '../context/SourceContext';
 import { DestinationContext } from '../context/DestinationContext';
 import MapboxMap from '../components/Home/MapboxMap';
+import Contain from '../components/Home/Contain';
 
 export default function IndexPage() {
     // Inicializa source y destination como null
@@ -19,6 +20,9 @@ export default function IndexPage() {
                     </div>
                     <div className="col-span-2">
                         <MapboxMap />
+                    </div>
+                    <div>
+                        <Contain/>
                     </div>
                 </div>
             </DestinationContext.Provider>
