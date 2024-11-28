@@ -6,7 +6,7 @@ export const CarListData=[
         seat:0,
         desc:'22 rides',
         amount:3000,
-        image:'/LOGO-SEEDAS.jpg',
+        image:'/mot.jpeg',
         alt:'carro imagen'
     },
     {
@@ -15,7 +15,7 @@ export const CarListData=[
         seat:2,
         desc:'44 rides',
         amount:7000,
-        image:'/LOGO-SEEDAS.jpg',
+        image:'/ca.jpeg',
         alt:'carro imagen2'
     },
     {
@@ -24,7 +24,7 @@ export const CarListData=[
         seat:1,
         desc:'1 rides',
         amount:12000,
-        image:'/LOGO-SEEDAS.jpg',
+        image:'/cami.jpeg',
         alt:'carro imagen3'
     }
 ] ;
