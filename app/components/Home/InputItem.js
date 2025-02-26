@@ -36,17 +36,23 @@ function InputItem({ type }) {
         }
         return () => {
             if (geocoderRef.current) {
-              
+                geocoderRef.current.clear(); // Limpia el componente al desmontar
             }
         };
     }, [type, setSource, setDestination]);
 
     return (
-        <div className="bg-slate-200 p-3 rounded-lg mt-3 flex items-center gap-4">
+        <div 
+            className="bg-slate-200 p-3 rounded-lg mt-3 flex items-center gap-4 relative" // Añadido `relative`
+        >
             <Image src="/source.png" width={15} height={15} alt="Location Icon" />
-            <div id={`geocoder-${type}`} className="w-full" />
+            <div 
+                id={`geocoder-${type}`} 
+                className="w-full z-10" // Añadido `z-10` para priorizar el autocompletar
+            />
         </div>
     );
 }
 
 export default InputItem;
+

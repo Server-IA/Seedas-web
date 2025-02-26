@@ -1,17 +1,17 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
+import { useUser } from "@clerk/nextjs";
 import SearchSection from "../components/Home/SearchSection";
-import { SourceContext } from "../context/SourceContext";
-import { DestinationContext } from "../context/DestinationContext";
 import MapboxMap from "../components/Home/MapboxMap";
 import Contain from "../components/Home/Contain";
+import { SourceContext } from "../context/SourceContext";
+import { DestinationContext } from "../context/DestinationContext";
 import { UserIdContext } from "../context/UserIdContext";
-import { useAuth } from "@clerk/nextjs";
 
 export default function IndexPage() {
   const [source, setSource] = useState(null);
   const [destination, setDestination] = useState(null);
-  const { user, isLoaded } = useAuth(); // `isLoaded` indica si Clerk ya está listo
+  const { user, isLoaded } = useUser();
   const userId = isLoaded && user ? user.id : null;
 
   return (

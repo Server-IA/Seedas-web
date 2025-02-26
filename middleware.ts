@@ -11,7 +11,7 @@ const isProtectedRoute = createRouteMatcher([
 // Middleware de Clerk
 export default clerkMiddleware((auth, req) => {
   if (!auth().userId && isProtectedRoute(req)) {
-    // Lógica personalizada antes de redirigir
+    // Redirigir a la página de inicio de sesión si no hay un usuario autenticado
     return auth().redirectToSignIn();
   }
 });
@@ -24,6 +24,6 @@ export const config = {
     '/',
     '/(api|trpc)(.*)',
     // Especificar que la ruta de webhook sea pública
-    '/api/webhooks/user/:path*'
+    '/api/webhooks/user/:path*',
   ],
 };
