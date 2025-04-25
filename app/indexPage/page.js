@@ -19,15 +19,18 @@ export default function IndexPage() {
       <SourceContext.Provider value={{ source, setSource }}>
         <DestinationContext.Provider value={{ destination, setDestination }}>
           <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div>
+            {/* Columna 1: SearchSection */}
+            <div className="md:col-span-1">
               <SearchSection />
             </div>
-            <div className="col-span-2">
+
+            {/* Columna 2: Mapa */}
+            <div className="md:col-span-2 flex flex-col gap-4">
               <MapboxMap />
+              <div className="md:col-start-1 col-span-1 p-6 bg-white border rounded shadow-md w-full">
+                <Contain />
+              </div>
             </div>
-          </div>
-          <div className="p-4 bg-white border rounded shadow-md w-full max-w-full">
-            <Contain />
           </div>
         </DestinationContext.Provider>
       </SourceContext.Provider>

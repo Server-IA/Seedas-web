@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { useUser } from "@clerk/nextjs";
@@ -20,7 +21,6 @@ const CarListOption = ({ setSelectedCar }) => {
           ...doc.data(),
         }));
 
-        // Filtrar publicaciones para que no muestre las del usuario actual
         const publicacionesFiltradas = publicacionesData.filter(
           (publicacion) => publicacion.userId !== user?.id
         );
@@ -41,26 +41,26 @@ const CarListOption = ({ setSelectedCar }) => {
   }
 
   return (
-    <div className="grid gap-2 p-2 border rounded-md bg-white shadow-md w-auto text-sm h-1/5 select-none">
-      {publicaciones.length > 0 ? (
-        publicaciones.map((publicacion) => (
-          <div
-            key={publicacion.id}
-            className={`cursor-pointer p-2 rounded-md transition-all duration-200 
-            ${selectedId === publicacion.id ? "border-2 border-black" : "hover:bg-gray-200"}`}
-            onClick={() => {
-              setSelectedCar(publicacion);
-              setSelectedId(publicacion.id);
-            }}
-          >
-            <TransporterDetails publicacion={publicacion} />
-          </div>
-        ))
-      ) : null} {/* No muestra ningún texto si no hay transportadores */}
+    <div className="p-2 border rounded-md bg-white shadow-md w-auto text-sm select-none">
+      <div className="grid gap-2 overflow-y-auto max-h-80"> {/* ajustado para mostrar 2 publicaciones */}
+        {publicaciones.length > 0 ? (
+          publicaciones.map((publicacion) => (
+            <div
+              key={publicacion.id}
+              className={`cursor-pointer p-2 rounded-md transition-all duration-200 
+              ${selectedId === publicacion.id ? "border-2 border-black" : "hover:bg-gray-200"}`}
+              onClick={() => {
+                setSelectedCar(publicacion);
+                setSelectedId(publicacion.id);
+              }}
+            >
+              <TransporterDetails publicacion={publicacion} />
+            </div>
+          ))
+        ) : null}
+      </div>
     </div>
   );
 };
 
 export default CarListOption;
-
-

@@ -21,7 +21,7 @@ const VehContain = () => {
     const fetchUserPublications = async () => {
       try {
         // Consulta en Firebase Firestore para obtener las publicaciones del usuario filtrando por userId
-        const q = query(collection(db, "Productores"), where("userId.userId", "==", userId));
+        const q = query(collection(db, "Transportadores"), where("userId", "==", userId));
         const querySnapshot = await getDocs(q);
 
         // Mapea los documentos obtenidos y los guarda en el estado

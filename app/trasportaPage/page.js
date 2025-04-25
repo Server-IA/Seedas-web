@@ -17,21 +17,27 @@ export default function TransportPage() {
 
   return (
     <VehUserIdContext.Provider value={{ userId }}>
-    <VehDestinationContext.Provider value={{ destination, setDestination }}>
-      <VehSourceContext.Provider value={{ source, setSource }}>
-        <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div>
-            <VehSearchSection />
+      <VehDestinationContext.Provider value={{ destination, setDestination }}>
+        <VehSourceContext.Provider value={{ source, setSource }}>
+          <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-5"> 
+            {/* Izquierda: Búsqueda */}
+            <div className="md:col-span-1">
+              <VehSearchSection />
+            </div>
+
+            {/* Derecha: Mapa + Contain pegados */}
+            <div className="md:col-span-2 flex flex-col">
+              <div className="mb-0">
+                <VehMapbox />
+              </div>
+              <div className=" p-6
+               bg-white border rounded shadow-md w-full mt-0">
+                <VehContain />
+              </div>
+            </div>
           </div>
-          <div className="col-span-2">
-            <VehMapbox />
-          </div>
-          <div className="p-4 bg-white border rounded shadow-md w-full max-w-full">
-            <VehContain />
-          </div>
-        </div>
-      </VehSourceContext.Provider>
-    </VehDestinationContext.Provider>
+        </VehSourceContext.Provider>
+      </VehDestinationContext.Provider>
     </VehUserIdContext.Provider>
   );
 }
