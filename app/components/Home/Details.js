@@ -1,8 +1,35 @@
 "use client";
-import React from "react";
+
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
+import { db } from "../../firebase/config";
+import TransporterCard from "./TransporterCard";
 
 const Details = ({ publicacion }) => {
+  const [transportadorAsignado, setTransportadorAsignado] = useState(null);
+
+  useEffect(() => {
+    if (!publicacion?.id) return;
+
+    const q = query(
+      collection(db, "Solicitudes"),
+      where("publicationId", "==", publicacion.id),
+      where("status", "==", "confirmado") // O usa "aceptada" según tu estructura real
+    );
+
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const data = snapshot.docs.map((doc) => doc.data());
+      if (data.length > 0) {
+        setTransportadorAsignado(data[0]); // Solo una solicitud confirmada por publicación
+      } else {
+        setTransportadorAsignado(null);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [publicacion?.id]);
+
   if (!publicacion) {
     console.log("No se recibió ninguna publicación.");
     return <p className="text-red-500">Error: No se pudo cargar la publicación.</p>;
@@ -34,18 +61,11 @@ const Details = ({ publicacion }) => {
       {publicacion.phone && <p><strong>Teléfono:</strong> {publicacion.phone}</p>}
       {publicacion.paymentMethod && <p><strong>Método de pago:</strong> {publicacion.paymentMethod}</p>}
 
-      {/* Mostrar Transportador si está asignado */}
-      {publicacion.userId?.userId && publicacion.userId?.userName ? (
-        <p>
-          <strong>Transportador:</strong>{" "}
-          <Link href={`/perfil/${publicacion.userId.userId}`}>
-            <span className="text-blue-600 underline hover:text-blue-800">
-              {publicacion.userId.userName}
-            </span>
-          </Link>
-        </p>
+      {/* Mostrar Transportador si hay solicitud confirmada */}
+      {transportadorAsignado ? (
+        <TransporterCard transportador={transportadorAsignado} />
       ) : (
-        <p className="text-yellow-600"><strong>Transportador:</strong> No asignado</p>
+        <p className="text-yellow-600 mt-4"><strong>Transportador:</strong> No asignado</p>
       )}
     </div>
   );

@@ -1,13 +1,31 @@
+"use client";
+
+import React from "react";
+import Link from "next/link";
+
 const TransporterCard = ({ transportador }) => {
-    return (
-      <div className="border p-4 rounded shadow mb-4">
-        <p><strong>Nombre:</strong> {transportador.name}</p>
-        <p><strong>Zona:</strong> {transportador.location}</p>
+  if (!transportador) return null;
+
+  return (
+    <div className="mt-4 p-4 bg-green-100 border border-green-300 rounded-md shadow-sm">
+      <h4 className="text-lg font-semibold text-green-800 mb-2">Transportador asignado</h4>
+      <p>
+        <strong>Nombre:</strong>{" "}
+        <Link href={`/perfil/${transportador.transportadorId}`}>
+          <span className="text-blue-600 underline hover:text-blue-800">
+            {transportador.transportadorName}
+          </span>
+        </Link>
+      </p>
+      {transportador.telefono && (
+        <p><strong>Teléfono:</strong> {transportador.telefono}</p>
+      )}
+      {transportador.vehicle && (
         <p><strong>Vehículo:</strong> {transportador.vehicle}</p>
-        <p><strong>Teléfono:</strong> {transportador.phone}</p>
-      </div>
-    );
-  };
-  
-  export default TransporterCard;
-  
+      )}
+    </div>
+  );
+};
+
+export default TransporterCard;
+
