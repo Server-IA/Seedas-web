@@ -11,7 +11,7 @@ function InputWeight({ weight, setWeight }) {
         id="weight"
         value={weight}
         onChange={(e) => setWeight(parseFloat(e.target.value) || 0)}
-        className="w-full border p-2 rounded"
+        className="w-full p-2 rounded-lg bg-gray-100 focus:outline-none"
         placeholder="Ingresa el peso de la carga"
       />
     </div>
@@ -19,3 +19,4 @@ function InputWeight({ weight, setWeight }) {
 }
 
 export default InputWeight;
+

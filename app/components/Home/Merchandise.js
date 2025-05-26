@@ -33,7 +33,7 @@ function Merchandise({ setMerchandiseData }) {
         id="merchandiseType"
         value={merchandiseType}
         onChange={(e) => handleSelection(e.target.value)}
-        className="w-full border p-2 rounded bg-white"
+        className="w-full p-2 rounded-lg bg-gray-100 focus:outline-none"
       >
         <option value="">Selecciona un tipo de carga</option>
         <option value="productos pecuarios">Productos Pecuarios</option>
@@ -43,14 +43,17 @@ function Merchandise({ setMerchandiseData }) {
 
       {merchandiseType === "otros" && (
         <div className="mt-2">
-          <label htmlFor="otherDescription" className="block text-sm font-medium mb-1">
+          <label
+            htmlFor="otherDescription"
+            className="block text-sm font-medium mb-1"
+          >
             Descripción de la carga:
           </label>
           <textarea
             id="otherDescription"
             value={otherDescription}
             onChange={handleDescriptionChange}
-            className="w-full border p-2 rounded"
+            className="w-full p-2 rounded-lg bg-gray-100 focus:outline-none"
             placeholder="Especifica el tipo de carga..."
           ></textarea>
         </div>

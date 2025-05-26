@@ -11,8 +11,8 @@ const TransporterCard = ({ transportador }) => {
       <h4 className="text-lg font-semibold text-green-800 mb-2">Transportador asignado</h4>
       <p>
         <strong>Nombre:</strong>{" "}
-        <Link href={`/perfil/${transportador.transportadorId}`}>
-          <span className="text-blue-600 underline hover:text-blue-800">
+        <Link href={`/userPage`}>
+          <span className="text-blue-600 underline hover:text-blue-800 cursor-pointer">
             {transportador.transportadorName}
           </span>
         </Link>

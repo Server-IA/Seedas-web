@@ -7,8 +7,7 @@ import {
   where, 
   getDocs 
 } from "firebase/firestore";
-import { db } from "./config"; // Configuración de Firebase
-
+import { db } from "./config"; 
 // 📌 Función para generar un ID único basado en el usuario y el tiempo
 const generateUniqueId = (userId) => `${userId}_${Date.now()}`;
 

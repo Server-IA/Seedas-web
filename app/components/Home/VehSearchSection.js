@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState, useContext } from 'react';
 import { useRouter } from 'next/navigation';
@@ -23,6 +23,7 @@ function VehSearchSection() {
 
   const userId = user?.id;
   const userName = user?.fullName;
+  const email = user?.primaryEmailAddress?.emailAddress || ''; // 👈 Se añadió para guardar el correo
 
   const handleSubmit = async () => {
     if (!source || !destination || !vehicle || !phone || !seats || !images || !userId || !userName) {
@@ -33,6 +34,7 @@ function VehSearchSection() {
     const TransportadoresData = {
       userId,
       userName,
+      email, // 👈 AÑADIDO para guardar en la colección
       source,
       destination,
       phone,
@@ -103,3 +105,4 @@ function VehSearchSection() {
 }
 
 export default VehSearchSection;
+

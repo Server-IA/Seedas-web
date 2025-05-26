@@ -18,7 +18,6 @@ import InputWeight from "./InputWeight";
 import Merchandise from "./Merchandise";
 import DateSelector from "./DateSelector";
 
-// Cálculo estimado del precio
 const calculatePrice = (distance, weight, tarifaBase) => {
   const baseRate = distance > 300 ? 2500 : 2000;
   const weightFactor = Math.ceil(weight / 200);
@@ -40,10 +39,9 @@ function SearchSection() {
   const [merchandiseData, setMerchandiseData] = useState({ type: "", description: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Calcular distancia y precio
   useEffect(() => {
     if (source && destination && selectedCar && weight > 0) {
-      const R = 6371; // km
+      const R = 6371;
       const dLat = (destination.lat - source.lat) * (Math.PI / 180);
       const dLng = (destination.lng - source.lng) * (Math.PI / 180);
       const a =
@@ -99,11 +97,13 @@ function SearchSection() {
 
     try {
       const userName = getUserDisplayName(user);
+      const email = user?.primaryEmailAddress?.emailAddress || ''; // 👈 AÑADIDO para guardar el correo
 
       // 1. Guardar publicación en Productores
       const publicationId = await saveProductoresToFirestore({
         userId,
         userName,
+        email, // 👈 AÑADIDO para guardar en la colección
         source,
         destination,
         vehicle: selectedCar.vehicle,
@@ -120,9 +120,10 @@ function SearchSection() {
       await saveSolicitudToFirestore({
         productorId: userId,
         productorName: userName,
+        productorEmail: email, // 👈 AÑADIDO para solicitud
         transportadorId: selectedCar.userId,
         transportadorName: selectedCar.userName || "Transportador",
-        publicationId, // vínculo a la publicación
+        publicationId,
         source,
         destination,
         price,
@@ -150,8 +151,9 @@ function SearchSection() {
       <InputPhone phone={phone} setPhone={setPhone} />
       <Merchandise setMerchandiseData={setMerchandiseData} />
       <InputWeight weight={weight} setWeight={setWeight} />
-      <CarListOption setSelectedCar={setSelectedCar} />
       <DateSelector setWorkingHours={setWorkingHours} />
+      <CarListOption setSelectedCar={setSelectedCar} />
+      
 
       {price && (
         <div className="mt-4">

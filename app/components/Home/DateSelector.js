@@ -1,43 +1,47 @@
-import React, { useState } from 'react';  
+"use client";
+import React, { useEffect, useState } from "react";
 
-const DateSelector = ({ setWorkingHours }) => {  
-  const [date, setDate] = useState('');  
-  const [startTime, setStartTime] = useState('');  
-  const [endTime, setEndTime] = useState('');  
-  const [isSaved, setIsSaved] = useState(false); // Estado para controlar la visibilidad del botón  
+const DateSelector = ({ setWorkingHours }) => {
+  const [date, setDate] = useState("");
 
-  const handleSave = () => {  
-    if (date && startTime && endTime) {  
-      setWorkingHours({ date, start: startTime, end: endTime });  
-      setIsSaved(true); // Ocultar el botón después de guardar  
-    } else {  
-      alert('Por favor, completa todos los campos de fecha y horario.');  
-    }  
-  };  
+  useEffect(() => {
+    // Setear la fecha actual al abrir el componente
+    const today = new Date();
+    const todayStr = today.toISOString().split("T")[0];
+    setDate(todayStr);
+  }, []);
 
-  return (  
-    <div className="mt-4">  
-       <div>  
-        <label>Fecha en la que necesitas el transporte:</label>  
-        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />  
-      </div>  
-      <h3>hora en la que el transportador lo pueda contactar</h3>
-      <div>  
-        <label>Hora de inicio :</label>  
-        <input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} />  
-      </div>  
-      <div>  
-        <label>Hora de finalización:</label>  
-        <input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} />  
-      </div>  
-      
-      {!isSaved && ( // Renderizar el botón solo si no se ha guardado  
-        <button onClick={handleSave} className="mt-0.3 bg-black text-white p-0.3 rounded">  
-          guardar fecha  
-        </button>  
-      )}  
-    </div>  
-  );  
-};  
+  const handleChange = (e) => {
+    const newDate = e.target.value;
+    setDate(newDate);
+    setWorkingHours((prev) => ({
+      ...prev,
+      date: newDate,
+    }));
+  };
+
+  const handleBlur = () => {
+    if (!date) {
+      alert("Recuerda escoger para cuándo necesitas el transporte.");
+    }
+  };
+
+  return (
+    <div className="my-4">
+      <label htmlFor="date" className="block font-medium">
+        Fecha en la que necesitas el transporte:
+      </label>
+      <input
+        type="date"
+        id="date"
+        value={date}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        className="w-full p-2 rounded-lg bg-gray-100 focus:outline-none"
+      />
+    </div>
+  );
+};
 
 export default DateSelector;
+
