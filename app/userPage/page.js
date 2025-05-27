@@ -9,10 +9,12 @@ import UserInfo from "../components/Home/UserInfo";
 import UserReviewForm from "../components/Home/UserReviewForm";
 import UserReviewsDisplay from "../components/Home/UserReviewsDisplay";
 
-export default function UserPage({ userId }) {
+export default function UserPage() {
   const { user } = useUser();
   const [vehUserId, setVehUserId] = useState(null);
   const [hasMounted, setHasMounted] = useState(false);
+
+  const userId = user?.id;
 
   useEffect(() => {
     setHasMounted(true);
