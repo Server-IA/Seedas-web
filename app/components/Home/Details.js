@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import { collection, query, where, onSnapshot } from "firebase/firestore";
+import { collection, query, where, onSnapshot, deleteDoc, doc, getDocs } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import TransporterCard from "./TransporterCard";
 
@@ -15,13 +14,13 @@ const Details = ({ publicacion }) => {
     const q = query(
       collection(db, "Solicitudes"),
       where("publicationId", "==", publicacion.id),
-      where("status", "==", "confirmado") // O usa "aceptada" según tu estructura real
+      where("status", "==", "confirmado")
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const data = snapshot.docs.map((doc) => doc.data());
       if (data.length > 0) {
-        setTransportadorAsignado(data[0]); // Solo una solicitud confirmada por publicación
+        setTransportadorAsignado(data[0]);
       } else {
         setTransportadorAsignado(null);
       }
@@ -30,8 +29,35 @@ const Details = ({ publicacion }) => {
     return () => unsubscribe();
   }, [publicacion?.id]);
 
+  // 👇 Lógica para eliminar publicación + solicitudes asociadas
+  const handleDelete = async () => {
+    if (!publicacion?.id) return;
+
+    try {
+      // Eliminar publicación en "Productores"
+      await deleteDoc(doc(db, "Productores", publicacion.id));
+
+      // Buscar y eliminar solicitudes asociadas
+      const solicitudesQuery = query(
+        collection(db, "Solicitudes"),
+        where("publicationId", "==", publicacion.id)
+      );
+
+      const solicitudesSnapshot = await getDocs(solicitudesQuery);
+      const deletePromises = solicitudesSnapshot.docs.map((docSnapshot) =>
+        deleteDoc(doc(db, "Solicitudes", docSnapshot.id))
+      );
+
+      await Promise.all(deletePromises);
+
+      alert("Publicación y solicitudes eliminadas correctamente.");
+    } catch (error) {
+      console.error("Error eliminando publicación:", error);
+      alert("Ocurrió un error al eliminar la publicación. Intenta nuevamente.");
+    }
+  };
+
   if (!publicacion) {
-    console.log("No se recibió ninguna publicación.");
     return <p className="text-red-500">Error: No se pudo cargar la publicación.</p>;
   }
 
@@ -53,7 +79,7 @@ const Details = ({ publicacion }) => {
         <p><strong>Descripción:</strong> {publicacion.merchandise?.description || "No especificado"}</p>
       )}
       <p><strong>Fecha:</strong> {publicacion.workingHours?.date || "No especificado"}</p>
-     
+
       {publicacion.vehicle && <p><strong>Vehículo:</strong> {publicacion.vehicle}</p>}
       {publicacion.phone && <p><strong>Teléfono:</strong> {publicacion.phone}</p>}
       {publicacion.paymentMethod && <p><strong>Método de pago:</strong> {publicacion.paymentMethod}</p>}
@@ -64,6 +90,23 @@ const Details = ({ publicacion }) => {
       ) : (
         <p className="text-yellow-600 mt-4"><strong>Transportador:</strong> No asignado</p>
       )}
+
+      {/* Botón para eliminar */}
+      <button
+        onClick={() => {
+          const confirmDelete = prompt(
+            '⚠️ Para confirmar la eliminación de la publicación, escribe "eliminar"'
+          );
+          if (confirmDelete?.toLowerCase() === "eliminar") {
+            handleDelete();
+          } else {
+            alert("Eliminación cancelada o texto incorrecto.");
+          }
+        }}
+        className="mt-4 px-3 py-1 bg-[#800020] text-white text-sm rounded hover:bg-[#990022] transition"
+      >
+        Eliminar Publicación
+      </button>
     </div>
   );
 };
