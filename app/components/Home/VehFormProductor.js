@@ -84,7 +84,7 @@ function VehFormProductor() {
 
       <button
         onClick={handleSubmit}
-        className="mt-4 bg-green-900 text-white p-3 rounded w-full hover:bg-green-800 transition-colors"
+        className="mt-4 bg-blue-900 text-white p-3 rounded w-full hover:bg-gray-800 transition-colors"
       >
         Publicar Transporte para Productor
       </button>

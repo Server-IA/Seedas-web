@@ -1,26 +1,26 @@
-'use client';  
-import React from 'react';   
-import ZoneDetails from '../components/Home/ZoneDetails';   
-import ZoneList from '../components/Home/ZoneContainVeh';  
-import ZoneSearch from '../components/Home/ZoneSearch';   
-import ZoneContain from '../components/Home/ZoneContain';  
+'use client';
+import React, { useState } from 'react';
+import ZonaList from '../components/Home/ZonaList';
+import ZonaCalendario from '../components/Home/ZonaCalendario';
 
-export default function ZonaTrabajo() {  
-  return (  
-    <div className="p-6 bg-[#A9B7A0] min-h-screen"> {/* Updated background color and min-height */}  
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">   
-          
-        <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-5">  
-          <div className="container mx-auto p-4 bg-white rounded-lg shadow-md">  
-            <h1 className="text-2xl font-bold mb-4">Publicaciones como Transportador</h1>  
-            <ZoneList />  
-          </div>  
-          <div className="container mx-auto p-4 bg-white rounded-lg shadow-md md:ml-4"> {/* Added margin to the left */}  
-            <h1 className="text-2xl font-bold mb-4">Publicaciones como Productor</h1>  
-            <ZoneContain />  
-          </div>  
-        </div>  
-      </div>  
-    </div>  
-  );  
-}
+
+const zonaTrabajo = () => {
+  const [filtros, setFiltros] = useState({ zona: '', role: 'all' });
+  const [rutaSeleccionada, setRutaSeleccionada] = useState({ source: null, destination: null });
+
+  return (
+    <div className="min-h-screen p-6 bg-[#F1F5F9]">
+      <h1 className="text-3xl font-bold text-center mb-8">Zona de Trabajo</h1>
+
+      <ZonaCalendario filtros={filtros} />
+      
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+        <ZonaList filtros={filtros} onSeleccionarRuta={setRutaSeleccionada} />
+ 
+      </div>
+    </div>
+  );
+};
+
+export default zonaTrabajo;

@@ -22,7 +22,7 @@ const VehProductorCard = ({ publicacionId }) => {
           // 2️⃣ Obtén la referencia al productor
           const productorId = solicitudData.productorId;
           if (productorId) {
-            const productorDoc = await getDoc(doc(db, 'Usuarios', productorId));
+            const productorDoc = await getDoc(doc(db, 'Productores', productorId));
             if (productorDoc.exists()) {
               const productorData = productorDoc.data();
               productoresData.push({

@@ -17,6 +17,7 @@
     "@stripe/react-stripe-js": "^2.7.1",
     "@stripe/stripe-js": "^3.4.1",
     "@turf/turf": "^7.1.0",
+    "date-fns": "^4.1.0",
     "firebase": "^11.0.1",
     "firebase-admin": "^13.0.0",
     "mapbox-gl": "^3.7.0",
