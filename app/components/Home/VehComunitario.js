@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { VehSourceContext } from "../../context/VehSourceContext";
 import { VehDestinationContext } from "../../context/VehDestinationContext";
-import { saveVehComunitarioToFirestore } from "../../firebase/Comunitario";
+import { saveVehComunitarioToFirestore } from "../../firebase/comunitario";
 import VehInputSource from "./VehInputSource";
 import VehInputDestination from "./VehInputDestination";
 import VehDate from "./VehDate";
