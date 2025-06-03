@@ -107,7 +107,7 @@ const VehMapbox = () => {
 
   }, [source, destination]);
 
-  return <div ref={mapContainerRef} className="w-full h-[600px] rounded-lg shadow" />;
+  return <div ref={mapContainerRef} className="w-full h-[400px] rounded-lg shadow" />;
 };
 
 export default VehMapbox;

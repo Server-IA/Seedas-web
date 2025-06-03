@@ -10,7 +10,6 @@ import VehContain from "../components/Home/VehContain";
 import VehSoliContain from "../components/Home/VehSoliContain";
 import { VehUserIdContext } from "../context/VehUserIdContext";
 
-
 export default function TransportPage() {
   const [source, setSource] = useState(null);
   const [destination, setDestination] = useState(null);
@@ -28,16 +27,16 @@ export default function TransportPage() {
             </div>
 
             {/* Derecha: Mapa + Contain pegados */}
-            <div className="md:col-span-2 flex flex-col">
-              <div className="mb-0">
+            <div className="md:col-span-2 flex flex-col gap-4">
+              
                 <VehMapbox />
+             
+              <div className="p-6 bg-white border rounded shadow-md w-full mt-0">
+                <h1 className="text-2xl font-bold mb-6">Panel del Transportador</h1>
+                <VehSoliContain />
               </div>
-              <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Panel del Transportador</h1>
-      <VehSoliContain />
-    </div>
-              <div className=" p-6
-               bg-white border rounded shadow-md w-full mt-0">
+
+              <div className="p-6 bg-white border rounded shadow-md w-full mt-0">
                 <VehContain />
               </div>
             </div>
