@@ -94,6 +94,7 @@ function VehComunitario() {
       date: date instanceof Date ? date : new Date(date),
       usuariosDisponibles: parseInt(seats, 10),
       price: parseFloat(price), // guardamos el precio calculado
+      visible:true,
     };
 
     try {

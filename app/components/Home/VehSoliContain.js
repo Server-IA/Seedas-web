@@ -66,27 +66,22 @@ const VehSoliContain = () => {
   };
 
   return (
-    <div className="p-4 bg-white rounded shadow-md w-full">
+    <div >
       {/* Solicitudes de Hoy */}
       <div className="mb-6">
         <VehSoliToday />
       </div>
-
-      {/* Título de Solicitudes Generales */}
-      <h2 className="text-xl font-semibold mb-4 text-[#800020] mt-4">
-        Solicitudes de Transporte Recibidas
-      </h2>
-       <div className="p-4 bg-white rounded shadow-md w-full">
-         <div className="mb-6">
-      {/* Lista de Solicitudes Generales */}
-      <VehSolicitudes
+        <div >
+          <div className="mb-6">
+            {/* Lista de Solicitudes Generales */}
+            <VehSolicitudes
 
       
-        solicitudes={solicitudes}
-        onConfirmar={handleConfirmClick}
-      />
+           solicitudes={solicitudes}
+           onConfirmar={handleConfirmClick}
+            />
+          </div>
         </div>
-      </div>
       {/* Modal de Confirmación */}
       {showModal && selectedSolicitud && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -109,7 +104,7 @@ const VehSoliContain = () => {
                     selectedSolicitud.publicationId
                   )
                 }
-                className="px-4 py-2 bg-[#800020] text-white rounded hover:bg-[#990022] transition"
+                className="px-4 py-2 bg-[#166d13] text-white rounded hover:bg-[#63dd44] transition"
               >
                 Confirmar
               </button>

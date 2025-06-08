@@ -23,7 +23,8 @@ const VehSoliToday = () => {
       try {
         const q = query(
           collection(db, "Solicitudes"),
-          where("transportadorId", "==", user.id)
+          where("transportadorId", "==", user.id),
+          where("visible", "==", true)
         );
 
         const querySnapshot = await getDocs(q);
@@ -35,7 +36,7 @@ const VehSoliToday = () => {
             ...doc.data(),
           }))
           .filter((doc) => {
-            if (!doc.createdAt) return false;
+            if (!doc.createdAt || doc.status === "cancelado") return false;
             const createdDate = new Date(doc.createdAt);
             createdDate.setHours(0, 0, 0, 0);
             return createdDate.getTime() === today;
@@ -56,7 +57,7 @@ const VehSoliToday = () => {
 
   return (
     <div className="p-4 border rounded bg-white shadow-md mt-4">
-      <h3 className="text-lg font-semibold text-[#800020] mb-2">
+      <h3 className="text-lg font-semibold text-[#0c3112] mb-2">
         📅 Solicitudes para Hoy ({new Date().toLocaleDateString()})
       </h3>
       {solicitudesHoy.length === 0 ? (
@@ -67,12 +68,13 @@ const VehSoliToday = () => {
             key={solicitud.id}
             className="p-3 border rounded bg-gray-50 shadow-sm hover:bg-gray-100 transition mb-2"
           >
-            <p><strong>Origen:</strong> {solicitud.source?.name || "No especificado"}</p>
-            <p><strong>Destino:</strong> {solicitud.destination?.name || "No especificado"}</p>
-            <p><strong>Precio:</strong> ${solicitud.price || "No especificado"}</p>
-            <p><strong>Fecha de publicación:</strong> {solicitud.createdAt ? new Date(solicitud.createdAt).toLocaleDateString() : "No especificado"}</p>
-            <p>
-              <strong>Estado:</strong>{" "}
+            <p><strong>🧑 Productor:</strong> {solicitud.productorName || "No especificado"}</p>
+              <p><strong>📍 Origen:</strong> {solicitud.source?.name || "No especificado"}</p>
+              <p><strong>📍 Destino:</strong> {solicitud.destination?.name || "No especificado"}</p>
+               <p><strong>💰 Precio:</strong> ${parseFloat(solicitud.price).toLocaleString("es-CO")} COP</p>              
+                <p><strong>📅Fecha:</strong> {solicitud.createdAt ? new Date(solicitud.createdAt).toLocaleDateString() : "No especificado"}</p>
+                <p>
+                  <strong>Estado:</strong>{" "}
               <span
                 className={`${
                   solicitud.status === "confirmado" ? "text-green-600" : "text-yellow-500"

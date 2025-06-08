@@ -22,10 +22,14 @@ const Contain = () => {
       try {
         const q = query(collection(db, "Productores"), where("userId", "==", userId));
         const querySnapshot = await getDocs(q);
-        const publicacionesData = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const publicacionesData = querySnapshot.docs
+          .map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+          // 👈 Mostrar todas menos las canceladas
+          .filter((pub) => pub.status !== "cancelado");
+
         setPublicaciones(publicacionesData);
       } catch (error) {
         console.error("Error al obtener publicaciones:", error);
@@ -40,11 +44,12 @@ const Contain = () => {
 
   if (loading) return <p className="text-gray-600">Cargando publicaciones...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
-  if (publicaciones.length === 0) return <p className="text-gray-600">No tienes publicaciones disponibles.</p>;
+  if (publicaciones.length === 0)
+    return <p className="text-gray-600">No tienes publicaciones activas.</p>;
 
   return (
     <div className="p-4 border rounded bg-white shadow-md">
-      <h3 
+      <h3
         className="font-bold mb-4 text-lg cursor-pointer flex justify-between items-center"
         onClick={() => setIsOpen(!isOpen)}
       >

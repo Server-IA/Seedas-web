@@ -34,13 +34,14 @@ function SearchSection() {
   const [price, setPrice] = useState(null);
   const [selectedCar, setSelectedCar] = useState(null);
   const [workingHours, setWorkingHours] = useState({ date: "", start: "", end: "" });
-  const [weight, setWeight] = useState(0);
+  const [weight, setWeight] = useState(""); // Cambiado a string
   const [phone, setPhone] = useState("");
   const [merchandiseData, setMerchandiseData] = useState({ type: "", description: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    if (source && destination && selectedCar && weight > 0) {
+    const parsedWeight = parseFloat(weight);
+    if (source && destination && selectedCar && !isNaN(parsedWeight) && parsedWeight > 0) {
       const R = 6371;
       const dLat = (destination.lat - source.lat) * (Math.PI / 180);
       const dLng = (destination.lng - source.lng) * (Math.PI / 180);
@@ -52,7 +53,7 @@ function SearchSection() {
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       const distance = R * c;
 
-      const calculatedPrice = calculatePrice(distance, weight, selectedCar.tarifaBase);
+      const calculatedPrice = calculatePrice(distance, parsedWeight, selectedCar.tarifaBase);
       setPrice(calculatedPrice.toFixed(2));
     } else {
       setPrice(null);
@@ -65,7 +66,7 @@ function SearchSection() {
     if (!destination) errors.push("destino");
     if (!selectedCar) errors.push("vehículo");
     if (!workingHours.date) errors.push("fecha");
-    if (weight <= 0) errors.push("peso");
+    if (!weight || parseFloat(weight) <= 0) errors.push("peso");
     if (!phone) errors.push("teléfono");
 
     if (errors.length > 0) {
@@ -97,44 +98,45 @@ function SearchSection() {
 
     try {
       const userName = getUserDisplayName(user);
-      const email = user?.primaryEmailAddress?.emailAddress || ''; // 👈 AÑADIDO para guardar el correo
+      const email = user?.primaryEmailAddress?.emailAddress || "";
 
-      // 1. Guardar publicación en Productores
       const publicationId = await saveProductoresToFirestore({
         userId,
         userName,
-        email, // 👈 AÑADIDO para guardar en la colección
+        email,
         source,
         destination,
         vehicle: selectedCar.vehicle,
         price,
-        weight,
+        weight: parseFloat(weight),
         workingHours,
         phone,
         paymentMethod,
         merchandise: merchandiseData,
         status: "pendiente",
+        visible: true,
       });
 
-      // 2. Crear solicitud para transportador
       await saveSolicitudToFirestore({
         productorId: userId,
         productorName: userName,
-        productorEmail: email, // 👈 AÑADIDO para solicitud
+        productorEmail: email,
         transportadorId: selectedCar.userId,
         transportadorName: selectedCar.userName || "Transportador",
         publicationId,
         source,
         destination,
         price,
-        weight,
+        weight: parseFloat(weight),
         vehicle: selectedCar.vehicle,
         workingHours,
         paymentMethod,
         merchandise: merchandiseData,
         status: "pendiente",
+        visible: true,
       });
-   if (paymentMethod === "cash") {
+
+      if (paymentMethod === "cash") {
         alert("Ya se le envió la solicitud al transportador. Estate pendiente que acepte.");
       } else {
         router.push("/zonaTrabajo");
@@ -156,7 +158,6 @@ function SearchSection() {
       <InputWeight weight={weight} setWeight={setWeight} />
       <DateSelector setWorkingHours={setWorkingHours} />
       <CarListOption setSelectedCar={setSelectedCar} />
-      
 
       {price && (
         <div className="mt-4">

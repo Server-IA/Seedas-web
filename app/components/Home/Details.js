@@ -1,7 +1,15 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { collection, query, where, onSnapshot, deleteDoc, doc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  updateDoc,
+  doc,
+  getDocs,
+} from "firebase/firestore";
 import { db } from "../../firebase/config";
 import TransporterCard from "./TransporterCard";
 
@@ -29,36 +37,46 @@ const Details = ({ publicacion }) => {
     return () => unsubscribe();
   }, [publicacion?.id]);
 
-  // 👇 Lógica para eliminar publicación + solicitudes asociadas
-  const handleDelete = async () => {
+  // ✅ Función corregida para cancelar publicación
+  const handleCancel = async () => {
     if (!publicacion?.id) return;
 
     try {
-      // Eliminar publicación en "Productores"
-      await deleteDoc(doc(db, "Productores", publicacion.id));
+      const mensaje = {
+        texto: "El productor canceló la publicación.",
+        timestamp: new Date().toISOString(),
+      };
 
-      // Buscar y eliminar solicitudes asociadas
+      // ✅ Buscar y actualizar todas las solicitudes con el mismo publicationId
       const solicitudesQuery = query(
         collection(db, "Solicitudes"),
         where("publicationId", "==", publicacion.id)
       );
 
       const solicitudesSnapshot = await getDocs(solicitudesQuery);
-      const deletePromises = solicitudesSnapshot.docs.map((docSnapshot) =>
-        deleteDoc(doc(db, "Solicitudes", docSnapshot.id))
+
+      const updatePromises = solicitudesSnapshot.docs.map((docSnap) =>
+        updateDoc(doc(db, "Solicitudes", docSnap.id), {
+          status: "cancelado",
+          mensajeParaTransportador: mensaje,
+        })
       );
 
-      await Promise.all(deletePromises);
+      await Promise.all(updatePromises);
 
-      alert("Publicación y solicitudes eliminadas correctamente.");
+      alert("✅ Publicación cancelada correctamente.");
     } catch (error) {
-      console.error("Error eliminando publicación:", error);
-      alert("Ocurrió un error al eliminar la publicación. Intenta nuevamente.");
+      console.error("Error cancelando publicación:", error);
+      alert("❌ Error al cancelar la publicación. Intenta nuevamente.");
     }
   };
 
   if (!publicacion) {
-    return <p className="text-red-500">Error: No se pudo cargar la publicación.</p>;
+    return (
+      <p className="text-red-500">
+        Error: No se pudo cargar la publicación.
+      </p>
+    );
   }
 
   return (
@@ -84,28 +102,29 @@ const Details = ({ publicacion }) => {
       {publicacion.phone && <p><strong>Teléfono:</strong> {publicacion.phone}</p>}
       {publicacion.paymentMethod && <p><strong>Método de pago:</strong> {publicacion.paymentMethod}</p>}
 
-      {/* Mostrar Transportador si hay solicitud confirmada */}
       {transportadorAsignado ? (
         <TransporterCard transportador={transportadorAsignado} />
       ) : (
-        <p className="text-yellow-600 mt-4"><strong>Transportador:</strong> No asignado</p>
+        <p className="text-yellow-600 mt-4">
+          <strong>Transportador:</strong> No asignado
+        </p>
       )}
 
-      {/* Botón para eliminar */}
+      {/* Botón para cancelar publicación */}
       <button
         onClick={() => {
-          const confirmDelete = prompt(
-            '⚠️ Para confirmar la eliminación de la publicación, escribe "eliminar"'
+          const confirmCancel = prompt(
+            '⚠️ Para confirmar la cancelación, escribe "cancelar"'
           );
-          if (confirmDelete?.toLowerCase() === "eliminar") {
-            handleDelete();
+          if (confirmCancel?.toLowerCase() === "cancelar") {
+            handleCancel();
           } else {
-            alert("Eliminación cancelada o texto incorrecto.");
+            alert("Cancelación abortada o texto incorrecto.");
           }
         }}
-        className="mt-4 px-3 py-1 bg-[#800020] text-white text-sm rounded hover:bg-[#990022] transition"
+        className="mt-4 px-3 py-1 bg-red-900 text-white text-sm rounded hover:bg-orange-700 transition"
       >
-        Eliminar Publicación
+        Cancelar Publicación
       </button>
     </div>
   );
