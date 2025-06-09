@@ -8,7 +8,7 @@ import { SourceContext } from "../context/SourceContext";
 import { DestinationContext } from "../context/DestinationContext";
 import { UserIdContext } from "../context/UserIdContext";
 import Solicitudes from "../components/Home/Solicitudes";
-import Notification from "../components/Home/Notification";
+import NotiContain from "../components/Home/NotiContain";
 
 export default function IndexPage() {
   const [source, setSource] = useState(null);
@@ -28,19 +28,20 @@ export default function IndexPage() {
 
             {/* Columna 2: Mapa */}
             <div className="md:col-span-2 flex flex-col gap-6">
-  <MapboxMap />
-  
-  <div className="w-full">
-    <Solicitudes />
-  </div>
+              <MapboxMap />
 
-  <Notification />
+              <div className="p-6 bg-white border rounded-xl shadow w-full">
+                <Solicitudes />
+              </div>
+              <div className="p-6 bg-white border rounded-xl shadow w-full">
+                <NotiContain />
+              </div>
 
-  <div className="p-6 bg-white border rounded shadow-md w-full">
-    <Contain />
-  </div>
-</div>
-</div>
+              <div className="p-6 bg-white border rounded-xl shadow w-full">
+                <Contain />
+              </div>
+            </div>
+          </div>
         </DestinationContext.Provider>
       </SourceContext.Provider>
     </UserIdContext.Provider>

@@ -138,6 +138,7 @@ function SearchSection() {
 
       if (paymentMethod === "cash") {
         alert("Ya se le envió la solicitud al transportador. Estate pendiente que acepte.");
+         router.push("/");
       } else {
         router.push("/zonaTrabajo");
       }

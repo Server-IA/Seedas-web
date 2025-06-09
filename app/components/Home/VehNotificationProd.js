@@ -18,7 +18,8 @@ const VehNotificationProd = () => {
         const q = query(
           collection(db, "Solicitudes"),
           where("transportadorId", "==", user.id),
-          where("status", "==", "cancelado")
+          where("status", "==", "cancelado"),
+          where("cancelledBy", "==", "productor") // ✅ Solo las que canceló el productor
         );
 
         const querySnapshot = await getDocs(q);

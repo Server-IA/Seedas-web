@@ -11,10 +11,10 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../../firebase/config";
-import VehSolicitudes from "./VehSolicitudes";
+import Solicitudes from "./Solicitudes";
 import VehSoliToday from "./VehSoliToday";
 
-const VehSoliContain = () => {
+const SolicitudesContain = () => {
   const { user } = useUser();
   const [solicitudes, setSolicitudes] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -60,50 +60,28 @@ const VehSoliContain = () => {
     }
   };
 
-  const cancelarSolicitud = async (solicitud) => {
-    try {
-      const solicitudRef = doc(db, "Solicitudes", solicitud.id);
-      await updateDoc(solicitudRef, {
-        status: "cancelado",
-        cancelMessage: "El transportador ha cancelado esta solicitud",
-          cancelledBy: "transportador",
-      });
-
-      setSolicitudes((prev) =>
-        prev.map((s) =>
-          s.id === solicitud.id ? { ...s, status: "cancelado" } : s
-        )
-      );
-      alert("Solicitud cancelada correctamente.");
-    } catch (error) {
-      console.error("Error al cancelar la solicitud:", error);
-      alert("Hubo un error al cancelar la solicitud.");
-    }
-  };
-
   const handleConfirmClick = (solicitud) => {
     setSelectedSolicitud(solicitud);
     setShowModal(true);
   };
 
   return (
-    <div>
+    <div >
       {/* Solicitudes de Hoy */}
       <div className="mb-6">
         <VehSoliToday />
       </div>
+        <div >
+          <div className="mb-6">
+            {/* Lista de Solicitudes Generales */}
+            <Solicitudes
 
-      <div>
-        <div className="mb-6">
-          {/* Lista de Solicitudes Generales */}
-          <VehSolicitudes
-            solicitudes={solicitudes}
-            onConfirmar={handleConfirmClick}
-            cancelarPublicacion={cancelarSolicitud}
-          />
+      
+           solicitudes={solicitudes}
+           onConfirmar={handleConfirmClick}
+            />
+          </div>
         </div>
-      </div>
-
       {/* Modal de Confirmación */}
       {showModal && selectedSolicitud && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -138,4 +116,4 @@ const VehSoliContain = () => {
   );
 };
 
-export default VehSoliContain;
+export default SolicitudesContain;

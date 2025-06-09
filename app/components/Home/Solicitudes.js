@@ -21,7 +21,6 @@ const Solicitudes = () => {
 
     const fetchSolicitudesHoy = async () => {
       try {
-        // Consulta: Filtramos por productorId y visible true
         const q = query(
           collection(db, "Solicitudes"),
           where("productorId", "==", user.id),
@@ -31,24 +30,21 @@ const Solicitudes = () => {
         const querySnapshot = await getDocs(q);
         const today = getTodayDate();
 
-        // Mapeamos documentos y filtramos:
-        // 1) Solo solicitudes creadas hoy (comparando fecha sin horas)
-        // 2) Solo solicitudes con status diferente de 'cancelado'
         const data = querySnapshot.docs
           .map((doc) => ({
             id: doc.id,
             ...doc.data(),
           }))
           .filter((doc) => {
-            if (!doc.createdAt) return false;
+            if (!doc.createdAt || doc.status === "cancelado") return false;
             const createdDate = new Date(doc.createdAt);
             createdDate.setHours(0, 0, 0, 0);
-            return createdDate.getTime() === today && doc.status !== "cancelado";
+            return createdDate.getTime() === today;
           });
 
         setSolicitudesHoy(data);
       } catch (error) {
-        console.error("Error al obtener solicitudes:", error);
+        console.error("Error al obtener solicitudes de hoy:", error);
       } finally {
         setLoading(false);
       }
@@ -57,62 +53,42 @@ const Solicitudes = () => {
     fetchSolicitudesHoy();
   }, [isLoaded, user]);
 
-  if (loading) {
-    return (
-      <div className="p-4 text-gray-500 animate-pulse">
-        Cargando solicitudes...
-      </div>
-    );
-  }
-
-  if (solicitudesHoy.length === 0) {
-    return (
-      <div className="p-4 text-gray-500">
-        No tienes solicitudes programadas para hoy.
-      </div>
-    );
-  }
+  if (loading) return <p className="text-gray-500">Cargando solicitudes de hoy...</p>;
 
   return (
-    <div className="p-4 bg-white border rounded shadow-md">
-      <h2 className="text-xl font-semibold text-[#800020] mb-4">
-        Solicitudes para Hoy
-      </h2>
-      {solicitudesHoy.map((solicitud) => (
-        <div
-          key={solicitud.id}
-          className="p-4 border rounded bg-gray-50 shadow-sm hover:bg-gray-100 transition mb-2"
-        >
-          <p>
-            <strong>Origen:</strong> {solicitud.source?.name || "No especificado"}
-          </p>
-          <p>
-            <strong>Destino:</strong>{" "}
-            {solicitud.destination?.name || "No especificado"}
-          </p>
-          <p>
-            <strong>Precio:</strong>{" "}
-            {solicitud.price
-              ? `$${parseFloat(solicitud.price).toLocaleString("es-CO")} COP`
-              : "No especificado"}
-          </p>
-
-          <p>
-            <strong>Estado:</strong>{" "}
-            <span
-              className={`${
-                solicitud.status === "confirmado"
-                  ? "text-green-600"
-                  : "text-yellow-500"
-              } font-semibold`}
-            >
-              {solicitud.status}
-            </span>
-          </p>
-        </div>
-      ))}
+    <div className="p-4 border rounded bg-white shadow-md mt-4">
+      <h3 className="text-lg font-semibold text-[#0c3112] mb-2">
+        📅 Solicitudes para Hoy ({new Date().toLocaleDateString()})
+      </h3>
+      {solicitudesHoy.length === 0 ? (
+        <p className="text-gray-500">No tienes solicitudes programadas para hoy.</p>
+      ) : (
+        solicitudesHoy.map((solicitud) => (
+          <div
+            key={solicitud.id}
+            className="p-3 border rounded bg-gray-50 shadow-sm hover:bg-gray-100 transition mb-2"
+          >
+            <p><strong>🧑 Transportador:</strong> {solicitud.transportadorName || "No especificado"}</p>
+              <p><strong>📍 Origen:</strong> {solicitud.source?.name || "No especificado"}</p>
+              <p><strong>📍 Destino:</strong> {solicitud.destination?.name || "No especificado"}</p>
+               <p><strong>💰 Precio:</strong> ${parseFloat(solicitud.price).toLocaleString("es-CO")} COP</p>              
+                <p><strong>📅Fecha:</strong> {solicitud.createdAt ? new Date(solicitud.createdAt).toLocaleDateString() : "No especificado"}</p>
+                <p>
+                  <strong>Estado:</strong>{" "}
+              <span
+                className={`${
+                  solicitud.status === "confirmado" ? "text-green-600" : "text-yellow-500"
+                } font-semibold`}
+              >
+                {solicitud.status}
+              </span>
+            </p>
+          </div>
+        ))
+      )}
     </div>
   );
 };
 
 export default Solicitudes;
+

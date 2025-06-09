@@ -4,6 +4,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { collection, query, where, getDocs, updateDoc, doc } from "firebase/firestore";
 import { db } from "../../firebase/config";
 import { VehUserIdContext } from "../../context/VehUserIdContext";
+import Image from "next/image";
 
 const VehContainProd = () => {
   const { userId } = useContext(VehUserIdContext);
@@ -57,10 +58,20 @@ const VehContainProd = () => {
       {isOpen && (
         <div className="space-y-4 max-h-60 overflow-y-auto pr-2">
           {publicaciones.map((pub) => (
+            
             <div key={pub.id} className="border border-gray-300 rounded p-4 bg-gray-50">
+               <div className="flex-shrink-0">
+                      <Image
+                        src={pub.image || "/source.png"}
+                        width={120}
+                        height={120}
+                        alt={`Imagen de ${pub.userName || "transportador"}`}
+                        className="rounded-md object-cover"
+                      />
+                    </div>
               <p><strong>Origen:</strong> {pub.source?.name || "No especificado"}</p>
-              <p><strong>Destino:</strong> {pub.destination?.name || "No especificado"}</p>
-              <p><strong>Fecha:</strong> {pub.workingHours?.date || "Sin fecha"}</p>
+              <p><strong>Vehículo:</strong> {pub.vehicle || "No especificado"}</p>
+              <p><strong>Fecha de publicación:</strong> {pub.createdAt ? new Date(pub.createdAt).toLocaleDateString() : "No especificado"}</p>
               <button
                 onClick={() => cancelarPublicacion(pub.id)}
                 className="mt-3 px-4 py-2 bg-[#800020] text-white rounded hover:bg-red-900 transition"
