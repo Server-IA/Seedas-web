@@ -115,6 +115,7 @@ function SearchSection() {
         merchandise: merchandiseData,
         status: "pendiente",
         visible: true,
+        enCamino: false
       });
 
       await saveSolicitudToFirestore({
@@ -134,6 +135,7 @@ function SearchSection() {
         merchandise: merchandiseData,
         status: "pendiente",
         visible: true,
+        enCamino: false
       });
 
       if (paymentMethod === "cash") {

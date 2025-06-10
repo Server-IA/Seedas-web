@@ -1,116 +1,46 @@
-"use client";
+// components/SoliContain.js
+import React, { useEffect, useState } from 'react';
+import { db } from '@/firebase';
+import { doc, updateDoc, onSnapshot } from 'firebase/firestore';
+import { Button } from './ui/button';
 
-import { useEffect, useState } from "react";
-import { useUser } from "@clerk/nextjs";
-import {
-  collection,
-  query,
-  where,
-  onSnapshot,
-  doc,
-  updateDoc,
-} from "firebase/firestore";
-import { db } from "../../firebase/config";
-import Solicitudes from "./Solicitudes";
-import VehSoliToday from "./VehSoliToday";
-
-const SolicitudesContain = () => {
-  const { user } = useUser();
-  const [solicitudes, setSolicitudes] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [selectedSolicitud, setSelectedSolicitud] = useState(null);
+const SolicitudesContain = ({ solicitudId }) => {
+  const [solicitud, setSolicitud] = useState(null);
 
   useEffect(() => {
-    if (!user?.id) return;
-
-    const q = query(
-      collection(db, "Solicitudes"),
-      where("transportadorId", "==", user.id)
-    );
-
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const data = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setSolicitudes(data);
+    const unsub = onSnapshot(doc(db, 'Solicitudes', solicitudId), (docSnap) => {
+      if (docSnap.exists()) {
+        setSolicitud({ id: docSnap.id, ...docSnap.data() });
+      }
     });
+    return () => unsub();
+  }, [solicitudId]);
 
-    return () => unsubscribe();
-  }, [user]);
-
-  const confirmarSolicitud = async (solicitudId, publicacionId) => {
-    try {
-      await updateDoc(doc(db, "Solicitudes", solicitudId), {
-        status: "confirmado",
-      });
-
-      await updateDoc(doc(db, "Productores", publicacionId), {
-        status: "confirmado",
-      });
-
-      setSolicitudes((prev) =>
-        prev.map((s) =>
-          s.id === solicitudId ? { ...s, status: "confirmado" } : s
-        )
-      );
-      setShowModal(false);
-    } catch (error) {
-      console.error("Error al confirmar la solicitud:", error);
-    }
+  const finalizarSolicitud = async () => {
+    if (!solicitud) return;
+    await updateDoc(doc(db, 'Solicitudes', solicitud.id), {
+      status: 'finalizado',
+      enCamino: false,
+    });
   };
 
-  const handleConfirmClick = (solicitud) => {
-    setSelectedSolicitud(solicitud);
-    setShowModal(true);
-  };
+  if (!solicitud) return null;
 
   return (
-    <div >
-      {/* Solicitudes de Hoy */}
-      <div className="mb-6">
-        <VehSoliToday />
-      </div>
-        <div >
-          <div className="mb-6">
-            {/* Lista de Solicitudes Generales */}
-            <Solicitudes
+    <div className="bg-gray-100 p-4 rounded-xl shadow-md mt-2">
+      <h3 className="text-lg font-semibold">📦 Detalles de la Solicitud</h3>
+      <p><strong>Origen:</strong> {solicitud.origen}</p>
+      <p><strong>Destino:</strong> {solicitud.destino}</p>
+      <p><strong>Transportador:</strong> {solicitud.transportadorNombre || 'N/A'}</p>
+      <p><strong>Estado:</strong> {solicitud.status}</p>
 
-      
-           solicitudes={solicitudes}
-           onConfirmar={handleConfirmClick}
-            />
-          </div>
-        </div>
-      {/* Modal de Confirmación */}
-      {showModal && selectedSolicitud && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded shadow-md w-80">
-            <h3 className="text-lg font-semibold mb-4">Confirmar Solicitud</h3>
-            <p className="mb-4">
-              ¿Estás seguro de confirmar esta solicitud de transporte?
-            </p>
-            <div className="flex justify-end space-x-2">
-              <button
-                onClick={() => setShowModal(false)}
-                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition"
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={() =>
-                  confirmarSolicitud(
-                    selectedSolicitud.id,
-                    selectedSolicitud.publicationId
-                  )
-                }
-                className="px-4 py-2 bg-[#166d13] text-white rounded hover:bg-[#63dd44] transition"
-              >
-                Confirmar
-              </button>
-            </div>
-          </div>
-        </div>
+      {solicitud.enCamino && (
+        <>
+          <p className="text-blue-700 mt-2">🚚 El transportador ya va en camino.</p>
+          <Button onClick={finalizarSolicitud} className="mt-2 bg-green-600 hover:bg-green-700 text-white">
+            Finalizar Solicitud
+          </Button>
+        </>
       )}
     </div>
   );

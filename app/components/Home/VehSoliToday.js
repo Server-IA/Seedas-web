@@ -37,7 +37,8 @@ const VehSoliToday = () => {
             ...doc.data(),
           }))
           .filter((doc) => {
-            if (!doc.createdAt || doc.status === "cancelado") return false;
+            if (!doc.createdAt) return false;
+            if (doc.status === "cancelado" || doc.status === "finalizado") return false;
             const createdDate = new Date(doc.createdAt);
             createdDate.setHours(0, 0, 0, 0);
             return createdDate.getTime() === today;
@@ -83,10 +84,9 @@ const VehSoliToday = () => {
 
               <Avisar
                 solicitudId={solicitud.id}
-                enCaminoInicial={solicitud.enCamino}
+                enCamino={solicitud.enCamino}
                 status={solicitud.status}
               />
-
           </div>
         ))
       )}
@@ -95,3 +95,4 @@ const VehSoliToday = () => {
 };
 
 export default VehSoliToday;
+

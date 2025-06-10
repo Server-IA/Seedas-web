@@ -9,7 +9,7 @@ export default function Home() {
       {/* Header Section */}
       <header className="text-center mb-8">
         <h1 className="text-5xl font-bold mb-4">Bienvenido a Seedas</h1>
-        <p className="text-xl"> Somos la nueva forma de conectar productores con transportadores de manera eficiente y colaborativa.</p>
+        <p className="text-xl"> Somos la nueva forma de conectar productores con transportadores de manera eficiente colaborativa y sin intermediarios .</p>
       </header>
 
   

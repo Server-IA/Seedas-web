@@ -36,3 +36,4 @@ const Avisar = ({ solicitudId, enCaminoInicial, status, onUpdate }) => {
 };
 
 export default Avisar;
+

@@ -17,9 +17,8 @@ const Afinalizar = ({ solicitudId, enCamino, statusInicial, transportadorId, onU
       setStatus("finalizado");
       if (onUpdate) onUpdate();
 
-      // Redirigir a la página del transportador
       if (transportadorId) {
-        router.push(`/userpage/${transportadorId}`);
+        router.push(`/userPage`,{transportadorId});
       }
     } catch (error) {
       console.error("Error al finalizar servicio:", error);
@@ -30,17 +29,29 @@ const Afinalizar = ({ solicitudId, enCamino, statusInicial, transportadorId, onU
     return <p className="text-green-700 font-semibold mt-2">✅ Servicio finalizado</p>;
   }
 
-  return enCamino ? (
-    <>
-      <p className="text-blue-600 font-semibold mt-2">El transportador ya va en camino 🚛</p>
-      <button
-        onClick={handleFinalizar}
-        className="mt-2 px-4 py-1 bg-green-600 text-white rounded hover:bg-green-700"
-      >
-        Finalizar servicio
-      </button>
-    </>
-  ) : null;
+  if ( status === "confirmado" ) {
+    return (
+      <>
+        {enCamino && (
+          <p className="text-blue-600 font-semibold mt-2">
+            El transportador ya va en camino 🚚
+          </p>
+        )}
+       
+   
+        
+        <button
+          onClick={handleFinalizar}
+          className="mt-2 px-4 py-1 bg-blue-900 text-white rounded hover:bg-green-700"
+        >
+        
+          finaliza acá cuando termine el servicio 
+        </button>
+      </>
+    );
+  }
+
+  return null;
 };
 
 export default Afinalizar;

@@ -83,7 +83,7 @@ const Solicitudes = () => {
 
            <Afinalizar
               solicitudId={solicitud.id}
-              enCamino={solicitud.status === "confirmado"}
+            
               statusInicial={solicitud.status}
               transportadorId={solicitud.transportadorId}
             />
