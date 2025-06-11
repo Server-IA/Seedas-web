@@ -26,7 +26,7 @@ export default function Home() {
           <Image src="/LOGO-SEEDAS.jpg" alt="Transporters" width={300} height={200} className="rounded-lg" />
         </div>
         <div className="flex flex-col items-center bg-gray-100 p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-semibold mb-2">Seedas</h2>
+          <h2 className="text-2xl font-semibold mb-2">Transporte comunitario</h2>
           <p className="text-center mb-4">  Explora u ofrece servicios de transporte comunitario, gestiona tus publicaciones y visualiza a los usuarios suscritos. </p>
           <Image src="/LOGO-SEEDAS.jpg" alt="Transporters" width={300} height={200} className="rounded-lg" />
         </div>
