@@ -17,7 +17,7 @@ const SoliToday = ({ solicitudes }) => {
       return (
         sol.status !== "cancelado" &&
         sol.status !== "finalizado" &&
-        sol.enCamino === true &&
+       
         fecha === today
       );
     });
@@ -30,7 +30,7 @@ const SoliToday = ({ solicitudes }) => {
       const ref = doc(db, "Solicitudes", id);
       await updateDoc(ref, {
         status: "finalizado",
-        enCamino: false,
+      
       });
       // Opcional: actualiza estado localmente sin recargar
       setActuales((prev) => prev.filter((s) => s.id !== id));
@@ -61,7 +61,7 @@ const SoliToday = ({ solicitudes }) => {
           <p><strong>📅 Fecha:</strong> {new Date(sol.createdAt).toLocaleDateString()}</p>
           <p><strong>Estado:</strong> {sol.status}</p>
 
-          {sol.enCamino && (
+          {sol.enCamino === true && (
             <>
               <p className="text-green-700 font-semibold">
                 El transportador ya va en camino 🚚

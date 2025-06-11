@@ -20,7 +20,7 @@ const SolicitudesContain = ({ solicitudId }) => {
     if (!solicitud) return;
     await updateDoc(doc(db, 'Solicitudes', solicitud.id), {
       status: 'finalizado',
-      enCamino: false,
+  
     });
   };
 
