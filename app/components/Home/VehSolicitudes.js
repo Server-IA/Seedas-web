@@ -41,13 +41,18 @@ const VehSolicitudes = ({ solicitudes, onConfirmar, cancelarPublicacion }) => {
               <p><strong>📍Origen:</strong> {solicitud.source?.name || "No especificado"}</p>
               <p><strong>📍Destino:</strong> {solicitud.destination?.name || "No especificado"}</p>
               <p><strong>💰Precio:</strong> ${solicitud.price || "No especificado"}</p>
-              <p><strong>📅Fecha:</strong> {solicitud.createdAt ? new Date(solicitud.createdAt).toLocaleDateString() : "No especificado"}</p>
+              <p>
+                <strong>📅Fecha:</strong>{" "}
+                {solicitud.workingHours?.date
+                  ? new Date(solicitud.workingHours.date + "T00:00:00").toLocaleDateString("es-CO")
+                  : "No especificado"}
+              </p>
               <p><strong>Tipo de Mercancía:</strong> {solicitud.merchandise?.type || "No especificado"}</p>
               {solicitud.merchandise?.type === "otros" && (
                 <p><strong>Descripción:</strong> {solicitud.merchandise?.description || "No especificado"}</p>
               )}
               <div className="mt-2 flex gap-2">
-                         {solicitud.status !== "confirmado" && (
+                {solicitud.status !== "confirmado" && (
                   <button
                     onClick={() => onConfirmar(solicitud)}
                     className="px-4 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition"
@@ -71,4 +76,3 @@ const VehSolicitudes = ({ solicitudes, onConfirmar, cancelarPublicacion }) => {
 };
 
 export default VehSolicitudes;
-

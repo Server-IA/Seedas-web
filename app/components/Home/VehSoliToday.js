@@ -11,10 +11,8 @@ const VehSoliToday = () => {
   const [solicitudesHoy, setSolicitudesHoy] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const getTodayDate = () => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return today.getTime();
+  const getTodayISO = () => {
+    return new Date().toISOString().split("T")[0]; // formato "YYYY-MM-DD"
   };
 
   useEffect(() => {
@@ -29,7 +27,7 @@ const VehSoliToday = () => {
         );
 
         const querySnapshot = await getDocs(q);
-        const today = getTodayDate();
+        const today = getTodayISO();
 
         const data = querySnapshot.docs
           .map((doc) => ({
@@ -37,11 +35,12 @@ const VehSoliToday = () => {
             ...doc.data(),
           }))
           .filter((doc) => {
-            if (!doc.createdAt) return false;
-            if (doc.status === "cancelado" || doc.status === "finalizado") return false;
-            const createdDate = new Date(doc.createdAt);
-            createdDate.setHours(0, 0, 0, 0);
-            return createdDate.getTime() === today;
+            const fecha = doc.workingHours?.date;
+            return (
+              fecha === today &&
+              doc.status !== "cancelado" &&
+              doc.status !== "finalizado"
+            );
           });
 
         setSolicitudesHoy(data);
@@ -74,7 +73,7 @@ const VehSoliToday = () => {
             <p><strong>📍 Origen:</strong> {solicitud.source?.name || "No especificado"}</p>
             <p><strong>📍 Destino:</strong> {solicitud.destination?.name || "No especificado"}</p>
             <p><strong>💰 Precio:</strong> ${parseFloat(solicitud.price).toLocaleString("es-CO")} COP</p>
-            <p><strong>📅 Fecha:</strong> {solicitud.createdAt ? new Date(solicitud.createdAt).toLocaleDateString() : "No especificado"}</p>
+            <p><strong>📅 Fecha:</strong> {solicitud.workingHours?.date || "No especificado"}</p>
             <p>
               <strong>Estado:</strong>{" "}
               <span className={`${solicitud.status === "confirmado" ? "text-green-600" : "text-yellow-500"} font-semibold`}>
@@ -82,11 +81,11 @@ const VehSoliToday = () => {
               </span>
             </p>
 
-              <Avisar
-                solicitudId={solicitud.id}
-                enCamino={solicitud.enCamino}
-                status={solicitud.status}
-              />
+            <Avisar
+              solicitudId={solicitud.id}
+              enCamino={solicitud.enCamino}
+              status={solicitud.status}
+            />
           </div>
         ))
       )}
@@ -95,4 +94,3 @@ const VehSoliToday = () => {
 };
 
 export default VehSoliToday;
-

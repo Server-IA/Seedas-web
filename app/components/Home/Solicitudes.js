@@ -11,10 +11,8 @@ const Solicitudes = () => {
   const [solicitudesHoy, setSolicitudesHoy] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const getTodayDate = () => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return today.getTime();
+  const getTodayISO = () => {
+    return new Date().toISOString().split("T")[0]; // "YYYY-MM-DD"
   };
 
   useEffect(() => {
@@ -29,7 +27,7 @@ const Solicitudes = () => {
         );
 
         const querySnapshot = await getDocs(q);
-        const today = getTodayDate();
+        const today = getTodayISO();
 
         const data = querySnapshot.docs
           .map((doc) => ({
@@ -37,10 +35,12 @@ const Solicitudes = () => {
             ...doc.data(),
           }))
           .filter((doc) => {
-            if (!doc.createdAt || doc.status === "cancelado") return false;
-            const createdDate = new Date(doc.createdAt);
-            createdDate.setHours(0, 0, 0, 0);
-            return createdDate.getTime() === today;
+            const fecha = doc.workingHours?.date;
+            return (
+              fecha === today &&
+              doc.status !== "cancelado" &&
+              doc.status !== "finalizado"
+            );
           });
 
         setSolicitudesHoy(data);
@@ -73,7 +73,7 @@ const Solicitudes = () => {
             <p><strong>📍 Origen:</strong> {solicitud.source?.name || "No especificado"}</p>
             <p><strong>📍 Destino:</strong> {solicitud.destination?.name || "No especificado"}</p>
             <p><strong>💰 Precio:</strong> ${parseFloat(solicitud.price).toLocaleString("es-CO")} COP</p>
-            <p><strong>📅 Fecha:</strong> {solicitud.createdAt ? new Date(solicitud.createdAt).toLocaleDateString() : "No especificado"}</p>
+            <p><strong>📅 Fecha:</strong> {solicitud.workingHours?.date || "No especificado"}</p>
             <p>
               <strong>Estado:</strong>{" "}
               <span className={`${solicitud.status === "confirmado" ? "text-green-600" : "text-yellow-500"} font-semibold`}>
@@ -81,13 +81,12 @@ const Solicitudes = () => {
               </span>
             </p>
 
-           <Afinalizar
+            <Afinalizar
               solicitudId={solicitud.id}
               enCamino={solicitud.enCamino}
               statusInicial={solicitud.status}
               transportadorId={solicitud.transportadorId}
             />
-
           </div>
         ))
       )}
