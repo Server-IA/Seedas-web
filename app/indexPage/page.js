@@ -15,6 +15,7 @@ export default function IndexPage() {
   const [destination, setDestination] = useState(null);
   const { user, isLoaded } = useUser();
   const userId = isLoaded && user ? user.id : null;
+  
 
   return (
     <UserIdContext.Provider value={{ userId }}>

@@ -140,9 +140,9 @@ function SearchSection() {
 
       if (paymentMethod === "cash") {
         alert("Ya se le envió la solicitud al transportador. Estate pendiente que acepte.");
-         router.push("/");
+         window.location.reload();
       } else {
-        router.push("/zonaTrabajo");
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error al enviar los datos:", error);
