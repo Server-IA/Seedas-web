@@ -1,119 +1,116 @@
 # SEEDAS
 
-Plataforma P2P de Transporte Rural Sostenible
+## Sustainable Rural Transportation P2P Platform
 
-SEEDAS es una plataforma web full-stack que conecta productores rurales con transportadores, facilitando la publicación, gestión y seguimiento de servicios de transporte de manera eficiente, escalable y segura.
-El proyecto está orientado a resolver necesidades logísticas en contextos rurales mediante un enfoque peer-to-peer (P2P) y una arquitectura moderna basada en la nube.
+SEEDAS is a responsive full-stack web platform that connects rural producers with rural transporters through a collaborative economy model. It enables the publication of vehicles, transportation needs, and community routes, facilitating the logistical management of agricultural and livestock cargo in rural contexts.
 
-# Sitio web
+The project was created to address the lack of transportation options adapted to specific cargo types and tertiary rural roads, using a peer-to-peer (P2P) approach, a modern cloud-based architecture, and a modular and scalable system.
+
+# Website
+
 https://seedas-web.vercel.app/
 
-# Características Principales
+# Main Features
 
-Autenticación y gestión de usuarios con Clerk
+User authentication and management with Clerk
 
-Publicación y gestión de servicios de transporte
+Publishing and management of transportation services
 
-Estados dinámicos de solicitudes (pendiente, confirmado, en camino, cancelado, finalizado)
+Dynamic request states (pending, confirmed, en route, canceled, completed)
 
-Suscripción a transporte comunitario con control de asientos
+Community transportation subscription with seat control
 
-Visualización de rutas y geocodificación con Mapbox
+Route visualization and geocoding with Mapbox
 
-Notificaciones por cambios de estado
+Notifications triggered by status changes
 
-Arquitectura modular y escalable
+Modular and scalable architecture
 
-Backend serverless con Firebase
+Serverless backend with Firebase
 
-Arquitectura y Diseño
+# Architecture and Design
 
-Arquitectura full-stack moderna basada en Next.js
+Modern full-stack architecture based on Next.js
 
-Separación por módulos y componentes reutilizables
+Separation by modules and reusable components
 
-#Modelado del sistema mediante:
+## System modeling using:
 
-Diagramas de Contexto, Contenedores y Componentes (C4)
+C4 diagrams (Context, Containers, and Components)
 
-Diagramas UML (casos de uso y secuencia)
+UML diagrams (database and sequence)
 
-Base de datos NoSQL (Firestore) para manejar datos heterogéneos y escalar sin esquemas rígidos
+NoSQL database (Firestore)
 
-Flujo de estados controlado de forma secuencial para evitar inconsistencias
-
-# Tecnologías Utilizadas
-## Lenguaje
+# Technologies Used
+## Language
 
 JavaScript
 
 ## Frontend
 
 React
-
 Next.js
-
 Tailwind CSS
 
 ## Backend / Cloud
 
 Firebase (Firestore, Functions, Storage)
 
+## External Services
 
-## Servicios Externos
-
-Mapbox (rutas y geocodificación)
-
-Mercado Pago (integración de pagos )
-
-Clerk (autenticación, autorización y middleware de rutas)
+Mapbox (routing and geocoding)
+Mercado Pago (payment integration)
+Clerk (authentication, authorization, and route middleware)
 
 ## DevOps
 
 Git & GitHub
+Vercel (continuous deployment)
 
-Vercel (despliegue continuo)
+# Project Management
 
-# Gestión del Proyecto
+Scrum methodology
 
-Metodología Scrum
+Incremental development through sprints
 
-Desarrollo incremental mediante Sprints
+Functional and non-functional requirements elicitation and analysis
 
-Levantamiento y análisis de requerimientos funcionales y no funcionales
+Prioritization based on impact and user needs
 
-Priorización basada en impacto y necesidades del usuario
+Technical documentation and version control
 
-Documentación técnica y control de versiones
+# Project Context
 
-#Contexto del Proyecto
+This project was developed entirely by me as a Software Engineering graduation project, with professional scope. Real-world software engineering practices were applied, including architectural design, requirements engineering, full-stack development, and production deployment.
 
-Este proyecto fue desarrollado como proyecto académico con alcance profesional, aplicando prácticas reales de ingeniería de software, incluyendo diseño arquitectónico, toma de requerimientos, implementación full-stack y despliegue en producción.
+# Role and Contributions
 
-# Rol y Aportes
+Role: Software Engineer – Full-Stack Developer
 
-Rol: Ingeniero de Software – Desarrollador Full-Stack
+System architecture design
 
-Diseño de la arquitectura del sistema
+Frontend and backend development
 
-Desarrollo frontend y backend
+Data modeling in Firestore
 
-Modelado de datos en Firestore
+External services integration
 
-Integración de servicios externos
+Business logic implementation and state control
 
-Implementación de lógica de negocio y control de estados
+Application deployment and maintenance
 
-Despliegue y mantenimiento de la aplicación
+# Project Status
 
-# Estado del Proyecto
+The project is functional and deployed.
+Some advanced features were deprioritized or discarded to maintain simplicity, stability, and scalability.
 
-Proyecto funcional y desplegado.
-Algunas funcionalidades avanzadas fueron priorizadas o descartadas para mantener simplicidad, estabilidad y escalabilidad.
+# Contact
 
-# Contacto
+Carlos Álvaro Andrés Cabrera Chavarro
+📧 Email: carlosandress2811@gmail.com
 
-carlosandress2811@gmail.com
+📱 Phone: +57 323 273 6496
 
-# Diagramas 
+# Diagrams
 https://drive.google.com/drive/folders/1bjas1DxwyhMJ5W-uMIqAU4jVT_72zYII?usp=drive_link 
