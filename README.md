@@ -1,36 +1,119 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# SEEDAS
 
-## Getting Started
+Plataforma P2P de Transporte Rural Sostenible
 
-First, run the development server:
+SEEDAS es una plataforma web full-stack que conecta productores rurales con transportadores, facilitando la publicación, gestión y seguimiento de servicios de transporte de manera eficiente, escalable y segura.
+El proyecto está orientado a resolver necesidades logísticas en contextos rurales mediante un enfoque peer-to-peer (P2P) y una arquitectura moderna basada en la nube.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+# Sitio web
+https://seedas-web.vercel.app/
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Características Principales
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Autenticación y gestión de usuarios con Clerk
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Publicación y gestión de servicios de transporte
 
-## Learn More
+Estados dinámicos de solicitudes (pendiente, confirmado, en camino, cancelado, finalizado)
 
-To learn more about Next.js, take a look at the following resources:
+Suscripción a transporte comunitario con control de asientos
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Visualización de rutas y geocodificación con Mapbox
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Notificaciones por cambios de estado
 
-## Deploy on Vercel
+Arquitectura modular y escalable
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Backend serverless con Firebase
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Arquitectura y Diseño
+
+Arquitectura full-stack moderna basada en Next.js
+
+Separación por módulos y componentes reutilizables
+
+#Modelado del sistema mediante:
+
+Diagramas de Contexto, Contenedores y Componentes (C4)
+
+Diagramas UML (casos de uso y secuencia)
+
+Base de datos NoSQL (Firestore) para manejar datos heterogéneos y escalar sin esquemas rígidos
+
+Flujo de estados controlado de forma secuencial para evitar inconsistencias
+
+# Tecnologías Utilizadas
+## Lenguaje
+
+JavaScript
+
+## Frontend
+
+React
+
+Next.js
+
+Tailwind CSS
+
+## Backend / Cloud
+
+Firebase (Firestore, Functions, Storage)
+
+
+## Servicios Externos
+
+Mapbox (rutas y geocodificación)
+
+Mercado Pago (integración de pagos )
+
+Clerk (autenticación, autorización y middleware de rutas)
+
+## DevOps
+
+Git & GitHub
+
+Vercel (despliegue continuo)
+
+# Gestión del Proyecto
+
+Metodología Scrum
+
+Desarrollo incremental mediante Sprints
+
+Levantamiento y análisis de requerimientos funcionales y no funcionales
+
+Priorización basada en impacto y necesidades del usuario
+
+Documentación técnica y control de versiones
+
+#Contexto del Proyecto
+
+Este proyecto fue desarrollado como proyecto académico con alcance profesional, aplicando prácticas reales de ingeniería de software, incluyendo diseño arquitectónico, toma de requerimientos, implementación full-stack y despliegue en producción.
+
+# Rol y Aportes
+
+Rol: Ingeniero de Software – Desarrollador Full-Stack
+
+Diseño de la arquitectura del sistema
+
+Desarrollo frontend y backend
+
+Modelado de datos en Firestore
+
+Integración de servicios externos
+
+Implementación de lógica de negocio y control de estados
+
+Despliegue y mantenimiento de la aplicación
+
+# Estado del Proyecto
+
+Proyecto funcional y desplegado.
+Algunas funcionalidades avanzadas fueron priorizadas o descartadas para mantener simplicidad, estabilidad y escalabilidad.
+
+# Contacto
+
+carlosandress2811@gmail.com
+
+# Diagramas 
+https://drive.google.com/drive/folders/1bjas1DxwyhMJ5W-uMIqAU4jVT_72zYII?usp=drive_link 
