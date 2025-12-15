@@ -1,42 +1,41 @@
 # Stage 1: Builder
 FROM node:24-alpine AS builder
 
+ARG FIREBASE_PROJECT_ID
+ARG FIREBASE_CLIENT_EMAIL
+ARG FIREBASE_PRIVATE_KEY
+ARG NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+ARG NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
+
+ENV FIREBASE_PROJECT_ID=$FIREBASE_PROJECT_ID
+ENV FIREBASE_CLIENT_EMAIL=$FIREBASE_CLIENT_EMAIL
+ENV FIREBASE_PRIVATE_KEY=$FIREBASE_PRIVATE_KEY
+ENV NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=$NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+ENV NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN=$NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN
+
 WORKDIR /app
 
-# Copy package.json and package-lock.json for dependency installation
 COPY package.json package-lock.json ./
-
-# Install dependencies
-RUN npm ci
-
-# Copy the rest of the application code
+RUN npm install
 COPY . .
 
-# Build the Next.js application
-# The `standalone` output mode is recommended for Docker
 ENV NEXT_TELEMETRY_DISABLED 1
 RUN npm run build
 
 # Stage 2: Runner
-FROM node:18-alpine AS runner
+FROM node:24-alpine AS runner
 
 WORKDIR /app
 
-# Set production environment
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 
-# Copy package.json for `npm start`
-# It's important to copy only necessary files for a lean image
 COPY --from=builder /app/package.json ./package.json
 
-# Copy the standalone output and public assets
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 
-# Expose the port Next.js runs on
 EXPOSE 3000
 
-# Start the Next.js application
-CMD ["npm", "start"]
+CMD ["node", "server.js"]
