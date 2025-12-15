@@ -1,0 +1,14 @@
+.env
+.next/
+.git/
+.vscode/
+node_modules/
+npm-debug.log
+README.md
+README.es.md
+.DS_Store
+*.local
+
+# For Next.js specific files that are generated during build
+# and handled in the multi-stage build directly
+standalone/
